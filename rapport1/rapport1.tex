@@ -223,21 +223,25 @@ La tête de lecture se trouve à la même position. Le nombre unaire a droite a 
 ----------------------------------------------------------------------
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{\texttt{copyAfterNextFirstBlank()}}
+\subsection{\texttt{shiftSubstract()}}
 \paragraph{Pré:}
+La tête de lecture se trouve sur un blanc séparant deux nombres en représentation unaire. Ces deux nombres sont délimités par un blanc.
+\begin{small}
 \begin{verbatim}
+---------------------------------------------v---------------------------------------------
+ suite de caractères|B|réprésentation unaire|B|réprésentation unaire|B|suite de caractères
+-------------------------------------------------------------------------------------------
 \end{verbatim}
+\end{small}
 \paragraph{Post:}
+La tête se trouve sur le blanc entre les 2 représentations unaire. Le premier nombre a été diminué du second et le deuxième conserve sa valeur mais a été décalé de facon a ce qu'il n'y ait toujours qu'un espace qui sépare les nombres unaires.
+\begin{footnotesize}
 \begin{verbatim}
+-------------------------------------------------------v---------------------------------------------
+ suite de caractères inchangés|B|réprésentation unaire|B|réprésentation unaire|B|suite de caractères
+-----------------------------------------------------------------------------------------------------
 \end{verbatim}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{\texttt{copyAfterNextSecondBlank()}}
-\paragraph{Pré:}
-\begin{verbatim}
-\end{verbatim}
-\paragraph{Post:}
-\begin{verbatim}
-\end{verbatim}
+\end{footnotesize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Addition}\label{add}
 \begin{verbatim}
@@ -350,28 +354,71 @@ On retransforme ensuite le nombre unaire représentant le résultat en binaire a
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Division}
-On transforme les deux nombre à multiplier en unaire comme expliqué dans addition ou soustraction. On modifie le ruban avec \texttt{copyRightOfLeftSequence()} de facon a avoir : 
+%%%%%%%%%%%% TODO: à revoir: ne pas utiliser directement la soustraction.
+%% On divise le premier (gauche) par le second (droite)
+%% On doit avoir le quotient (gauche) puis le reste (droite)
+%% 2 choses à taille variable: quotient et reste (qui est le nombre à diviser en fait...)
+%% Ex avec 5/3: B11111B111BB => BBBB11B111B1B => on a le reste au début, le diviseur et le quotient à droite => B1B11B (déplacer le reste tout à gauche [ou le quotient tout à droite] et effacer ce qu'il y a à droite (eraseRight) [ou à gauche (pas encore de sous-machine)])
+%% Ou: on inverse les deux: BB111B11111B ; on calcule => B1B111B11BBBB => il faut à nouveau déplacer... donc autant prend
+%% On n'a donc pas besoin de marqueurs (enfin, ils devront en utiliser dans la sous-machine qui remplace les caractères à gauches par le nombre de blancs correspondant au diviseur)
+%% PS: attention qu'il faut vérifier quand s'arrêter... => on arrive à 2/3, il ne faut pas commencer à remplacer des blancs... et on ne peut pas compter avant => on peut utiliser une exception où, si on veut diviser et qu'il n'y a pas assez à diviser, on annule les changements: càd, on ne remplace pas les 1 par des blancs mais par des marqueurs, si tout va bien (pas d'exception, on remplace les marqueurs par des B et si non, par des 1. S'il n'y a pas d'exception, on ajoute 1 au quotient (donc après).
+On transforme les deux nombres à multiplier en unaire comme expliqué dans la section \ref{add}. Notre ruban est alors de la forme:
 \begin{small}
 \begin{verbatim}
------------------------------------------------------v-----------------------------------
- suite de caractères|Quotient|B|Dividande|B|Diviseur|B|CopieDiviseur|suite de caractères
------------------------------------------------------------------------------------------
+-------------------------------v-------------------------------
+ suite de caractères|Dividende|B|Diviseur|suite de caractères
+---------------------------------------------------------------
 \end{verbatim}
 \end{small}
-Tout les nombres sont représentés en unaire. Et le quotient vaut 0 à l'initialisation le ruban sera de la forme:
-\begin{verbatim}
-----------------------------------------------v-----------------------------------
- suite de caractères|B|B|Dividande|B|Diviseur|B|CopieDiviseur|suite de caractères
-----------------------------------------------------------------------------------
-\end{verbatim}
-Ensuite tant que le diviseur n'est pas plus grand que le dividande on soustrait le diviseur du dividande. %on doit faire la machine pour ca ou on peut juste leur dire de s'arranger avec des marqueurs ?
+Ensuite on doit tester si le dividende est plus grand que le diviseur ou non. 
+Dans le cas ou il est plus grand on effectue une boucle, on utilise la méthode \texttt{shiftSubstract()} pour soustraire le diviseur du dividente (qui sera notre reste).
 \begin{small}
 \begin{verbatim}
------------------------------------------------------v-----------------------------------
- suite de caractères|Quotient|B|Dividande|B|Diviseur|B|CopieDiviseur|suite de caractères
------------------------------------------------------------------------------------------
+------------------------------------------v-------------------------------
+ suite de caractères|B|Dividende-Diviseur|B|Diviseur|suite de caractères
+--------------------------------------------------------------------------
 \end{verbatim}
 \end{small}
-On incrémente Quotient de 1 chaque fois qu'on soustrait le dividande à l'aide de \texttt{incrementLeft()} et d'une combinaison de \texttt{findFirstBlankOnTheLeft()} et \texttt{findFirstBlankOnTheRight()}.
-On recopie le diviseur à chaque fois que la soustraction est finie pour pouvoir recommencer l'itération.
+Ensuite on doit augmenter notre quotient de 1. On utilise \texttt{findFirstBlankOnTheLeft()} suivi de \texttt{incrementLeft()}.
+\begin{small}
+\begin{verbatim}
+-----------------------v--------------------------------------------------
+ suite de caractères|1|B|Dividende-Diviseur|B|Diviseur|suite de caractères
+--------------------------------------------------------------------------
+\end{verbatim}
+\end{small}
+Un appel a \texttt{findFirstBlankOnTheRight()} replace notre curseur a la position entre les 2 unaires et la forme générale du ruban sera: 
+\begin{small}
+\begin{verbatim}
+--------------------------------------v------------------------------
+ suite de caractères|Quotient|B|Reste|B|Diviseur|suite de caractères
+---------------------------------------------------------------------
+\end{verbatim}
+\end{small}
+On peut recommencer cette boucle jusqu'a ce que notre reste soit inférieur au diviseur. A la terminaison de la boucle, \texttt{eraseRight()} permet d'effacer notre diviseur
+et d'obtenir :
+\begin{small}
+\begin{verbatim}
+--------------------------------------v--------------------------------
+ suite de caractères|Quotient|B|Reste|B|suite de B|suite de caractères
+-----------------------------------------------------------------------
+\end{verbatim}
+\end{small}
+\texttt{findFirstBlankOnTheLeft()} pour positionner la tête sure le blanc entre le quotient et le reste en unaire.
+\begin{small}
+\begin{verbatim}
+-------------------------------------v----------------------------------
+ suite de caractères|Quotient unaire|B|Reste unaire|suite de caractères
+------------------------------------------------------------------------
+\end{verbatim}
+\end{small}
+On retransforme ensuite les nombre unaire en binaire avec \texttt{convertToBinaryLeft()} et \texttt{convertToBinaryRight()}.
+\begin{small}
+\begin{verbatim}
+--------------------------------------v-----------------------------------
+ suite de caractères|Quotient binaire|B|Reste binaire|suite de caractères
+--------------------------------------------------------------------------
+\end{verbatim}
+\end{small}
+Et finalement \texttt{findFirstBlankOnTheright()} pour positionner la tête de lecture à l'endroit souhaité.
 \end{document}
