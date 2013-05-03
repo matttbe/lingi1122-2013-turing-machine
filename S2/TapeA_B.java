@@ -27,11 +27,20 @@ public class TapeA_B implements Tape {
 		}
 		// finish the tape
 		readhead.next = null;
+		nullNextEncountered = true;
+		nullPreviousEncountered = (readhead.previous == null);
 	}
 	
 	// utiliser des sous-problemes pour ca, ne pas hesiter a decomposer
 	// eviter les spec par implementation
 	public boolean repOk() {
+		// tester si tout les caracteres sont valides
+		// verifier si il n'y a pas de boucles
+		// une seule cell peut avoir un prev null et une seule un next null
+		// la tete pointe vers une case connue
+		// zone B plus petite possible
+		// zone B' plus petite possible
+		
 		return false;
 	}
 	
