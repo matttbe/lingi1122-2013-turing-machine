@@ -9,8 +9,30 @@ public class TapeA_B implements Tape {
 	
 	
 	public TapeA_B(String init) throws Exception {
+		if (init == null)
+			throws new Exception();
+		if (init.equals("")){
+			readhead = new Cell();
+			return;
+		}			
+		readhead = null;
+		Cell tempNew = null;
+		int maxLength = init.length;
+		int i = 0;
+		while(i < maxLength){
+			tempNew = new Cell();
+			testChar(init[i]); // throw exception if needed
+			tempNew.content = init[i];
+			tempNew.previous = readhead;
+			readhead = tempNew;
+			readhead.previous.next = readhead;
+			i++;
+		}
+		readhead.next = null;
 	}
 	
+	// utiliser des sous-problemes pour ca, ne pas hesiter a decomposer
+	// eviter les spec par implementation
 	public boolean repOk() {
 		return false;
 	}
