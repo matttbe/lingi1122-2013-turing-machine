@@ -28,6 +28,12 @@ public class TapeA_B implements Tape {
 			readhead.previous.next = readhead;
 			i++;
 		}
+		// set a B for last
+		tempNew = new Cell();
+		tempNew.previous = readhead;
+		readhead = tempNew;
+		readhead.previous.next = readhead;
+		// finish the tape
 		readhead.next = null;
 	}
 	
