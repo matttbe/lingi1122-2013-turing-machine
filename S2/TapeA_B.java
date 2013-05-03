@@ -11,13 +11,10 @@ public class TapeA_B implements Tape {
 	public TapeA_B(String init) throws Exception {
 		if (init == null)
 			throws new Exception();
-		if (init.equals("")){
-			readhead = new Cell();
-			return;
-		}			
+		String initB = init + " "; // to ensure the position of the readhead the block after the last of init
 		readhead = null;
 		Cell tempNew = null;
-		int maxLength = init.length;
+		int maxLength = initB.length;
 		int i = 0;
 		while(i < maxLength){
 			tempNew = new Cell();
@@ -28,11 +25,6 @@ public class TapeA_B implements Tape {
 			readhead.previous.next = readhead;
 			i++;
 		}
-		// set a B for last
-		tempNew = new Cell();
-		tempNew.previous = readhead;
-		readhead = tempNew;
-		readhead.previous.next = readhead;
 		// finish the tape
 		readhead.next = null;
 	}
