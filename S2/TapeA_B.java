@@ -5,18 +5,30 @@ public class TapeA_B implements Tape {
 	private boolean nullNextEncountered;
 	private boolean nullPreviousEncountered;
 	
-	private static final char B = ' ';
+	private static final char B = ' '; // final variable for the Blanc
 	
-	
+	/**
+	 * @param :	init : the string that represent the tape
+	 * @post :		build a TapeA_B object, the readhead is the block 
+	 * 				after the last char of init
+	 * 				raise an exception if init is null or contains char not allowed
+	 */
 	public TapeA_B(String init) throws Exception {
+		// ensure something to transform in a tape
 		if (init == null)
 			throw new Exception();
-		String initB = init + " "; // to ensure the position of the readhead the block after the last of init
+		
+		// to ensure the position of the readhead the block after the last of init
+		String initB = init + " "; 
+		
+		// initialisation
 		readhead = null;
 		Cell tempNew = null;
 		int maxLength = initB.length ();
 		int i = 0;
-		char[] initChar = init.toCharArray ();
+		char[] initChar = initB.toCharArray ();
+		
+		// building of the tape
 		while(i < maxLength){
 			tempNew = new Cell();
 			testChar(initChar[i]); // throw exception if needed
@@ -26,24 +38,18 @@ public class TapeA_B implements Tape {
 			readhead.previous.next = readhead;
 			i++;
 		}
+		
 		// finish the tape
 		readhead.next = null;
 		nullNextEncountered = true;
 		nullPreviousEncountered = (readhead.previous == null);
 	}
 	
-	// utiliser des sous-problemes pour ca, ne pas hesiter a decomposer
-	// eviter les spec par implementation
+	
 	public boolean repOk() {
 		if (repOkNb != -1) // deja teste
 			return (repOkNb == 0);
 		repOkNb = 0;
-		// tester si tout les caracteres sont valides
-		// verifier si il n'y a pas de boucles
-		// une seule cell peut avoir un prev null et une seule un next null
-		// la tete pointe vers une case connue
-		// zone B plus petite possible
-		// zone B' plus petite possible
 		
 		// 1ere boucle, on regarde vers next : 
 		Cell tempNow = readhead.next;
