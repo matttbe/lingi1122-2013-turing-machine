@@ -47,33 +47,39 @@ public class TapeA_B implements Tape {
 		// 1ere boucle, on regarde vers next : 
 		Cell tempNow = readhead.next;
 		Cell tempPast = readhead;
-		while (temp != null && repOkNb == 0){
+		while (tempNow != null && repOkNb == 0){
 			// test le char
 			try 
-				testChar(temp.content);
+				testChar(tempNow.content);
 			catch (Exception e)
 				repOkNb++;
 			// verifie qu'on pointe bien vers le prev, chaine qui augmente bien et on verifie qu'on est pas sur une case deja testee
-			if ((tempNow.previous != tempPast) || (temp != readhead))
+			if ((tempNow.previous != tempPast) || (tempNow != readhead))
 				repOkNb++;
 			tempPast = tempNow;
 			tempNow = tempPast.next;
 		}
+		// teste si il y a des blancs au bout de la chaine (B' minimale)
+		if (repOkNb == 0 && tempPast != readhead && tempPast.content == B)
+			repOkNb++;
 		// on a fini le cote next, on redemare de readhead dans l'autre sens
 		tempNow = readhead.previous;
 		tempPast = readhead;
-		while (temp != null && repOkNb == 0){
+		while (tempNow != null && repOkNb == 0){
 			// test le char
 			try 
-				testChar(temp.content);
+				testChar(tempNow.content);
 			catch (Exception e)
 				repOkNb++;
 			// verifie qu'on pointe bien vers le prev, chaine qui augmente bien et on verifie qu'on est pas sur une case deja testee
-			if ((tempNow.next != tempPast) || (temp != readhead))
+			if ((tempNow.next != tempPast) || (tempNow != readhead))
 				repOkNb++;
 			tempPast = tempNow;
 			tempNow = tempPast.previous;
 		}
+		// teste si il y a des blancs au bout de la chaine (B' minimale)
+		if (repOkNb == 0 && tempPast != readhead && tempPast.content == B)
+			repOkNb++;
 		return (repOkNb == 0);
 	}
 	
