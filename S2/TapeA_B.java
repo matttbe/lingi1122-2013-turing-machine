@@ -45,51 +45,66 @@ public class TapeA_B implements Tape {
 		nullPreviousEncountered = (readhead.previous == null);
 	}
 	
-	
+	/**
+	 * Test if the structure agreed the invariant of representation :
+	 * - characters are in the Gamma alphabet (from char n°32 to 126)
+	 * - no loop, linear course long the double linked list
+	 * - only one cell with a null previous and only one with a null next
+	 * - the readhead must be on the tape (not null)
+	 * - B zone (contains all the not blanc char) as little as possible
+	 * - B' (extended zone B with blanc at ends) zone as little as possible
+	 * @return :	true, if the object agreed the invariant of representation
+	 * 				false, if not
+	 * TODO : invariant et variant de boucle
+	 */
 	public boolean repOk() {
-		if (repOkNb != -1) // deja teste
-			return (repOkNb == 0);
-		repOkNb = 0;
+		// in case of already tested
+		repOkNb = -1;
 		
-		// 1ere boucle, on regarde vers next : 
+		// ensure at least one block
+		if (readhead == null)
+			repOkNb++;
+			
+		// first search, to the left
 		Cell tempNow = readhead.next;
 		Cell tempPast = readhead;
-		while (tempNow != null && repOkNb == 0) {
-			// test le char
+		while (tempNow != null && repOkNb == -1) {
+			// ensure an available char
 			try {
 				testChar(tempNow.content);
 			} catch (Exception e){
 				repOkNb++;
 			}
-			// verifie qu'on pointe bien vers le prev, chaine qui augmente bien et on verifie qu'on est pas sur une case deja testee
+			// ensure double linkage 
 			if ((tempNow.previous != tempPast) || (tempNow != readhead))
 				repOkNb++;
 			tempPast = tempNow;
 			tempNow = tempPast.next;
 		}
-		// teste si il y a des blancs au bout de la chaine (B' minimale)
-		if (repOkNb == 0 && tempPast != readhead && tempPast.content == B)
+		// test if there is not too much blanc at the end (B' as little as possible)
+		if (repOkNb == -1 && tempPast != readhead && tempPast.content == B)
 			repOkNb++;
-		// on a fini le cote next, on redemare de readhead dans l'autre sens
+			
+		// second search, to the right
 		tempNow = readhead.previous;
 		tempPast = readhead;
-		while (tempNow != null && repOkNb == 0) {
-			// test le char
+		while (tempNow != null && repOkNb == -1) {
+			// ensure an available char
 			try {
 				testChar(tempNow.content);
 			} catch (Exception e) {
 				repOkNb++;
 			}
-			// verifie qu'on pointe bien vers le prev, chaine qui augmente bien et on verifie qu'on est pas sur une case deja testee
+			// ensure double linkage 
 			if ((tempNow.next != tempPast) || (tempNow != readhead))
 				repOkNb++;
 			tempPast = tempNow;
 			tempNow = tempPast.previous;
 		}
-		// teste si il y a des blancs au bout de la chaine (B' minimale)
-		if (repOkNb == 0 && tempPast != readhead && tempPast.content == B)
+		// test if there is not too much blanc at the end (B' as little as possible)
+		if (repOkNb == -1 && tempPast != readhead && tempPast.content == B)
 			repOkNb++;
-		return (repOkNb == 0);
+		return (repOkNb == -1);
 	}
 	
 	public boolean isSymbol(char s) throws Exception {
