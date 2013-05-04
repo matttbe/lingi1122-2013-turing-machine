@@ -10,16 +10,17 @@ public class TapeA_B implements Tape {
 	
 	public TapeA_B(String init) throws Exception {
 		if (init == null)
-			throws new Exception();
+			throw new Exception();
 		String initB = init + " "; // to ensure the position of the readhead the block after the last of init
 		readhead = null;
 		Cell tempNew = null;
-		int maxLength = initB.length;
+		int maxLength = initB.length ();
 		int i = 0;
+		char[] initChar = init.toCharArray ();
 		while(i < maxLength){
 			tempNew = new Cell();
-			testChar(init[i]); // throw exception if needed
-			tempNew.content = init[i];
+			testChar(initChar[i]); // throw exception if needed
+			tempNew.content = initChar[i];
 			tempNew.previous = readhead;
 			readhead = tempNew;
 			readhead.previous.next = readhead;
@@ -34,7 +35,7 @@ public class TapeA_B implements Tape {
 	// utiliser des sous-problemes pour ca, ne pas hesiter a decomposer
 	// eviter les spec par implementation
 	public boolean repOk() {
-		if (repOk != -1) // deja teste
+		if (repOkNb != -1) // deja teste
 			return (repOkNb == 0);
 		repOkNb = 0;
 		// tester si tout les caracteres sont valides
@@ -47,14 +48,15 @@ public class TapeA_B implements Tape {
 		// 1ere boucle, on regarde vers next : 
 		Cell tempNow = readhead.next;
 		Cell tempPast = readhead;
-		while (temp != null && repOkNb == 0){
+		while (tempNow != null && repOkNb == 0) {
 			// test le char
-			try 
-				testChar(temp.content);
-			catch (Exception e)
+			try {
+				testChar(tempNow.content);
+			} catch (Exception e){
 				repOkNb++;
+			}
 			// verifie qu'on pointe bien vers le prev, chaine qui augmente bien et on verifie qu'on est pas sur une case deja testee
-			if ((tempNow.previous != tempPast) || (temp != readhead))
+			if ((tempNow.previous != tempPast) || (tempNow != readhead))
 				repOkNb++;
 			tempPast = tempNow;
 			tempNow = tempPast.next;
@@ -62,14 +64,15 @@ public class TapeA_B implements Tape {
 		// on a fini le cote next, on redemare de readhead dans l'autre sens
 		tempNow = readhead.previous;
 		tempPast = readhead;
-		while (temp != null && repOkNb == 0){
+		while (tempNow != null && repOkNb == 0) {
 			// test le char
-			try 
-				testChar(temp.content);
-			catch (Exception e)
+			try {
+				testChar(tempNow.content);
+			} catch (Exception e) {
 				repOkNb++;
+			}
 			// verifie qu'on pointe bien vers le prev, chaine qui augmente bien et on verifie qu'on est pas sur une case deja testee
-			if ((tempNow.next != tempPast) || (temp != readhead))
+			if ((tempNow.next != tempPast) || (tempNow != readhead))
 				repOkNb++;
 			tempPast = tempNow;
 			tempNow = tempPast.previous;
@@ -88,13 +91,19 @@ public class TapeA_B implements Tape {
 	}
 
 	public void leftMove() {
-		// case of basic tape with only one box with B inside
-		if (nullNextEncountered && nullPreviousEncountered && isSymbol(B)){
+		try {
+			// case of basic tape with only one box with B inside
+			if (nullNextEncountered && nullPreviousEncountered && isSymbol(B))
+				return;
+			
+			// case of we are leaving a end of the tape and it is B 
+			// so we have to delete the last box ton maintain the invariant
+			if (nullNextEncountered && isSymbol(B))
+				readhead.previous.next = null;
+		} catch (Exception e) {
 			return;
-		// case of we are leaving a end of the tape and it is B 
-		// so we have to delete the last box ton maintain the invariant
-		if (nullNextEncountered && isSymbol(B))
-			readhead.previous.next = null;
+		}
+
 		// case of end of the tape and we have to go into the B territory
 		if (nullPreviousEncountered){
 			readhead.previous = new Cell();
@@ -106,13 +115,17 @@ public class TapeA_B implements Tape {
 	}
 
 	public void rightMove() {
+		try {
 		// case of basic tape with only one box with B inside
-		if (nullPreviousEncountered && nullNextEncountered && isSymbol(B)){
+			if (nullPreviousEncountered && nullNextEncountered && isSymbol(B))
+				return;
+			// case of we are leaving a end of the tape and it is B 
+			// so we have to delete the last box ton maintain the invariant
+			if (nullPreviousEncountered && isSymbol(B))
+				readhead.next.previous = null;
+		} catch (Exception e) {
 			return;
-		// case of we are leaving a end of the tape and it is B 
-		// so we have to delete the last box ton maintain the invariant
-		if (nullPreviousEncountered && isSymbol(B))
-			readhead.next.previous = null;
+		}
 		// case of end of the tape and we have to go into the B territory
 		if (nullNextEncountered){
 			readhead.next = new Cell();
@@ -143,7 +156,7 @@ public class TapeA_B implements Tape {
 		char content = B;
 		Cell next = null;
 		Cell previous = null;
-		int checkedFor = -1;
+		// int checkedFor = -1; // not used
 		
 		public Cell() {
 		}
