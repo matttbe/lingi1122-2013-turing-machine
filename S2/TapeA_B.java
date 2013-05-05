@@ -39,7 +39,7 @@ public class TapeA_B implements Tape {
 			tempNew.content = initChar[i];
 			tempNew.previous = readhead;
 			readhead = tempNew;
-			if (readhead.previous != null)
+			if (readhead.previous != null) // first cell: previous doesn't exist
 				readhead.previous.next = readhead;
 			i++;
 		}
@@ -152,17 +152,20 @@ public class TapeA_B implements Tape {
 			if (nullNextEncountered && isSymbol(B))
 				readhead.previous.next = null;
 		} catch (Exception e) {
-			return;
+			return; // problem with isSymbol: should not happen because the
+			        // symbol has been checked before (constructor or putSymbol)
 		}
 
 		// case of end of the tape and we have to go into the B territory
 		if (nullPreviousEncountered){
 			readhead.previous = new Cell();
 			readhead.previous.next = readhead;
-			nullNextEncountered = false;
 		}
+
 		// normal case
 		readhead = readhead.previous;
+		nullPreviousEncountered = (readhead.previous == null);
+		nullNextEncountered = false;
 	}
 
 	/**
@@ -190,10 +193,11 @@ public class TapeA_B implements Tape {
 		if (nullNextEncountered){
 			readhead.next = new Cell();
 			readhead.next.previous = readhead;
-			nullPreviousEncountered = false;
 		}
 		// normal case
 		readhead = readhead.next;
+		nullNextEncountered = (readhead.next == null);
+		nullPreviousEncountered = false;
 	}
 
 	/**
@@ -240,7 +244,9 @@ public class TapeA_B implements Tape {
 	 * @post: throws an exception if the char is invalid (not between 32 and 126)
 	 */
 	private void testChar(char s) throws Exception {
-		if ((int) s > 126 || (int) s < 32)
+		if ((int) s > 126 || (int) s < 32) {
+			System.err.println ("Invalid char: '" + s + "'");
 			throw new Exception();
+		}
 	}
 }
