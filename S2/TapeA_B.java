@@ -1,7 +1,7 @@
 public class TapeA_B implements Tape {
     private Cell readhead;
 	
-	private int repOkNb = -1;
+	//private int repOkNb = -1; // not used
 	private boolean nullNextEncountered;
 	private boolean nullPreviousEncountered;
 	
@@ -59,52 +59,53 @@ public class TapeA_B implements Tape {
 	 */
 	public boolean repOk() {
 		// in case of already tested
-		repOkNb = -1;
+		int test = 0;
 		
 		// ensure at least one block
 		if (readhead == null)
-			repOkNb++;
+			test++;
 			
 		// first search, to the left
 		Cell tempNow = readhead.next;
 		Cell tempPast = readhead;
-		while (tempNow != null && repOkNb == -1) {
+		while (tempNow != null && test == 0) {
 			// ensure an available char
 			try {
 				testChar(tempNow.content);
 			} catch (Exception e){
-				repOkNb++;
+				test++;
 			}
 			// ensure double linkage 
 			if ((tempNow.previous != tempPast) || (tempNow != readhead))
-				repOkNb++;
+				test++;
 			tempPast = tempNow;
 			tempNow = tempPast.next;
 		}
 		// test if there is not too much blanc at the end (B' as little as possible)
-		if (repOkNb == -1 && tempPast != readhead && tempPast.content == B)
-			repOkNb++;
+		if (test == 0 && tempPast != readhead && tempPast.content == B)
+			test++;
 			
 		// second search, to the right
 		tempNow = readhead.previous;
 		tempPast = readhead;
-		while (tempNow != null && repOkNb == -1) {
+		while (tempNow != null && test == 0) {
 			// ensure an available char
 			try {
 				testChar(tempNow.content);
 			} catch (Exception e) {
-				repOkNb++;
+				test++;
 			}
 			// ensure double linkage 
 			if ((tempNow.next != tempPast) || (tempNow != readhead))
-				repOkNb++;
+				test++;
 			tempPast = tempNow;
 			tempNow = tempPast.previous;
 		}
 		// test if there is not too much blanc at the end (B' as little as possible)
-		if (repOkNb == -1 && tempPast != readhead && tempPast.content == B)
-			repOkNb++;
-		return (repOkNb == -1);
+		if (test == 0 && tempPast != readhead && tempPast.content == B)
+			test++;
+		
+		return (test == 0);
 	}
 	
 	public boolean isSymbol(char s) throws Exception {
