@@ -63,7 +63,6 @@ public class TapeA_B implements Tape {
 	 * TODO : invariant et variant de boucle
 	 */
 	public boolean repOk() {
-		// in case of already tested
 		int test = 0;
 		
 		// ensure at least one block
@@ -81,7 +80,7 @@ public class TapeA_B implements Tape {
 				test++;
 			}
 			// ensure double linkage 
-			if ((tempNow.previous != tempPast) || (tempNow != readhead))
+			if ((tempNow.previous != tempPast) || (tempNow == readhead))
 				test++;
 			tempPast = tempNow;
 			tempNow = tempPast.next;
@@ -101,7 +100,7 @@ public class TapeA_B implements Tape {
 				test++;
 			}
 			// ensure double linkage 
-			if ((tempNow.next != tempPast) || (tempNow != readhead))
+			if ((tempNow.next != tempPast) || (tempNow == readhead))
 				test++;
 			tempPast = tempNow;
 			tempNow = tempPast.previous;
