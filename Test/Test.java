@@ -61,6 +61,7 @@ public class Test
 		}
 		System.out.println (tape.toString ()); // BBB(...)B10101001
 		System.out.println ("\nNEW TEST: with empty string\n");
+		Tape tape1 = tape;
 		try
 		{
 			tape = new TapeA_B ("");
@@ -94,6 +95,9 @@ public class Test
 			e.printStackTrace();
 		}
 		System.out.println (tape.toString ()); // "[0]  1"
+
+		System.out.println ("\nNEW TEST: repOK\n");
+		System.out.println (tape1.repOk ());
 	}
 
 }
