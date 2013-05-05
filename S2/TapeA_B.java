@@ -30,8 +30,12 @@ public class TapeA_B implements Tape {
 		
 		/**
 		 * building of the tape:
-		 * 	Inv: TODO
-		 * 	Var: TODO
+		 * 	Inv: readhead contains the last cell of a double linked list
+		 * 		 representative of the sub-chartable up to the index i 
+		 * 		 not counted. The linked list is not finished (the next 
+		 * 		 variable of readhead is not assigned).
+		 * 	Var: i contains the index of the last char added to the
+		 * 		 structure + 1
 		 */
 		while(i < maxLength){
 			tempNew = new Cell();
@@ -123,7 +127,7 @@ public class TapeA_B implements Tape {
 	}
 
 	/**
-	 * @pre: /
+	 * @pre:  readhead valid and != null (always the case)
 	 * @post: replace the symbol bellow the read hind by 's'.
 	 *        An exception is produced if 's' is not valid
 	 */
@@ -133,7 +137,7 @@ public class TapeA_B implements Tape {
 	}
 
 	/**
-	 * @pre: TODO: nothing?
+	 * @pre:  readhead valid and != null (always the case)
 	 * @post: move the read head to the cell on the left or do nothing if the
 	 *        tape only contains a blank.
 	 *        If the previous cell doesn't exist, create a new one with blank char.
@@ -168,7 +172,7 @@ public class TapeA_B implements Tape {
 	}
 
 	/**
-	 * @pre: TODO: nothing?
+	 * @pre:  readhead valid and != null (always the case)
 	 * @post: move the read head to the cell on the right or do nothing if the
 	 *        tape only contains a blank.
 	 *        If the next cell doesn't exist, create a new one with blank char.
