@@ -198,22 +198,35 @@ public class TapeA_B implements Tape {
 
 	/**
 	 * @pre: readhead valid and != null (always the case)
-	 * @post: return a String with the content of all char available on the tape.
-	 *        The char bellow the read head is surrounded by brackets
+	 * @post: return a String of the form alpha[s]beta with the content 
+	 * 		  of all char available on the tape.
+	 *        The char bellow the read head is surrounded by brackets (s).
+	 * 		  alpha is a suffixe of what is before the readhead
+	 * 		  beta is a prefixe of what is after the readhead
 	 */
 	public String toString() {
 		String answer = "[" + readhead.content + "]";
 		Cell temp;
 		temp = readhead.next;
 		/**
-		 * Inv: TODO
-		 * Var: TODO
+		 * Inv: answer contains the string [s]beta' where beta' is the 
+		 * 		string representation up to the previous cell of temp.
+		 * Var: at each steps, temp take the value of temp.next so temp
+		 * 		contains the first cell after readhead with the content
+		 * 		is not already in answer
 		 */
 		while (temp != null){
 			answer = answer + temp.content;
 			temp = temp.next;
 		}
 		temp = readhead.previous;
+		/**
+		 * Inv: answer contains the string alpha'[s]beta where alpha' is the 
+		 * 		string representation up to the next cell of temp.
+		 * Var: at each steps, temp take the value of temp.previous so temp
+		 * 		contains the first cell before readhead with the content
+		 * 		is not already in answer
+		 */
 		while (temp != null){
 			answer = temp.content + answer;
 			temp = temp.previous;
