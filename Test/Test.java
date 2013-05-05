@@ -96,8 +96,11 @@ public class Test
 		}
 		System.out.println (tape.toString ()); // "[0]  1"
 
-		System.out.println ("\nNEW TEST: repOK\n");
+		System.out.println ("\nTEST 1: repOK\n");
 		System.out.println (tape1.repOk ());
+
+		System.out.println ("\nTEST 2: repOK\n");
+		System.out.println (tape.repOk ());
 	}
 
 }
