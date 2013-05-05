@@ -76,6 +76,11 @@ public class TapeA_B implements Tape {
 		// first search, to the left
 		Cell tempNow = readhead.next;
 		Cell tempPast = readhead;
+		/**
+		 * var: at each step tempPast is the previous cell and tempNow 
+		 *      is the cell on the right
+		 * inv: readHead is not modified
+		 */
 		while (tempNow != null && test == 0) {
 			// ensure an available char
 			try {
@@ -96,6 +101,11 @@ public class TapeA_B implements Tape {
 		// second search, to the right
 		tempNow = readhead.previous;
 		tempPast = readhead;
+		/**
+		 * var: at each step tempPast is the next cell and tempNow 
+		 *      is the cell on the left
+		 * inv: readHead is not modified
+		 */
 		while (tempNow != null && test == 0) {
 			// ensure an available char
 			try {
