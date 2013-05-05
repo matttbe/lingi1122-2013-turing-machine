@@ -1,11 +1,11 @@
 public class TapeA_B implements Tape {
-    private Cell readhead;
+	private Cell readhead;
 	
 	private int repOkNb = -1;
 	private boolean nullNextEncountered;
 	private boolean nullPreviousEncountered;
 	
-	private static final char B = ' '; // final variable for the Blanc
+	private static final char B = ' '; // final variable for the Blank
 	
 	/**
 	 * @param :	init : the string that represent the tape
@@ -18,7 +18,7 @@ public class TapeA_B implements Tape {
 		if (init == null)
 			throw new Exception();
 		
-		// to ensure the position of the readhead the block after the last of init
+		// to ensure the position of the read head is after the last block of init
 		String initB = init + " "; 
 		
 		// initialisation
@@ -28,7 +28,11 @@ public class TapeA_B implements Tape {
 		int i = 0;
 		char[] initChar = initB.toCharArray ();
 		
-		// building of the tape
+		/**
+		 * building of the tape:
+		 * 	Inv: TODO
+		 * 	Var: TODO
+		 */
 		while(i < maxLength){
 			tempNew = new Cell();
 			testChar(initChar[i]); // throw exception if needed
@@ -106,17 +110,35 @@ public class TapeA_B implements Tape {
 			repOkNb++;
 		return (repOkNb == -1);
 	}
-	
+
+	/**
+	 * @pre: /
+	 * @post: true iff the symbol bellow the read head is 's'.
+	 *        An exception is produced if 's' is not valid
+	 */
 	public boolean isSymbol(char s) throws Exception {
 		testChar(s);
 		return readhead.content == s;
 	}
-	
+
+	/**
+	 * @pre: /
+	 * @post: replace the symbol bellow the read hind by 's'.
+	 *        An exception is produced if 's' is not valid
+	 */
 	public void putSymbol(char s) throws Exception {
 		testChar(s); 
 		readhead.content = s; 
 	}
 
+	/**
+	 * @pre: TODO: nothing?
+	 * @post: move the read head to the cell on the left or do nothing if the
+	 *        tape only contains a blank.
+	 *        If the previous cell doesn't exist, create a new one with blank char.
+	 *        If the read head is on the last cell which is blank (and is not
+	 *         the only one), remove this cell.
+	 */
 	public void leftMove() {
 		try {
 			// case of basic tape with only one box with B inside
@@ -141,6 +163,14 @@ public class TapeA_B implements Tape {
 		readhead = readhead.previous;
 	}
 
+	/**
+	 * @pre: TODO: nothing?
+	 * @post: move the read head to the cell on the right or do nothing if the
+	 *        tape only contains a blank.
+	 *        If the next cell doesn't exist, create a new one with blank char.
+	 *        If the read head is on the first cell which is blank (and is not
+	 *         the only one), remove this cell.
+	 */
 	public void rightMove() {
 		try {
 		// case of basic tape with only one box with B inside
@@ -148,10 +178,11 @@ public class TapeA_B implements Tape {
 				return;
 			// case of we are leaving a end of the tape and it is B 
 			// so we have to delete the last box ton maintain the invariant
-			if (nullPreviousEncountered && isSymbol(B))
+			if (nullPreviousEncountered && isSymbol(B)) // readhead.previous == null
 				readhead.next.previous = null;
 		} catch (Exception e) {
-			return;
+			return; // problem with isSymbol: should not happen because the
+			        // symbol has been checked before (constructor or putSymbol)
 		}
 		// case of end of the tape and we have to go into the B territory
 		if (nullNextEncountered){
@@ -162,11 +193,20 @@ public class TapeA_B implements Tape {
 		// normal case
 		readhead = readhead.next;
 	}
-	
+
+	/**
+	 * @pre: readhead valid and != null (always the case)
+	 * @post: return a String with the content of all char available on the tape.
+	 *        The char bellow the read head is surrounded by brackets
+	 */
 	public String toString() {
 		String answer = "[" + readhead.content + "]";
 		Cell temp;
 		temp = readhead.next;
+		/**
+		 * Inv: TODO
+		 * Var: TODO
+		 */
 		while (temp != null){
 			answer = answer + temp.content;
 			temp = temp.next;
@@ -178,7 +218,11 @@ public class TapeA_B implements Tape {
 		}
 		return answer;
 	}
-	
+
+	/**
+	 * @pre: /
+	 * @post: a new Cell is created. The char is B (blank) by default
+	 */
 	private class Cell {
 		char content = B;
 		Cell next = null;
@@ -188,9 +232,13 @@ public class TapeA_B implements Tape {
 		public Cell() {
 		}
 	}
-	
+
+	/**
+	 * @pre: s is an ASCII char.
+	 * @post: throws an exception if the char is invalid (not between 32 and 126)
+	 */
 	private void testChar(char s) throws Exception {
-		if (s > 126 || s < 32)
+		if ((int) s > 126 || (int) s < 32)
 			throw new Exception();
 	}
 }
