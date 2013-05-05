@@ -1,9 +1,9 @@
 public class TapeA_B implements Tape {
 	private Cell readhead;
 	
-	//private int repOkNb = -1; // not used
-	private boolean nullNextEncountered;
-	private boolean nullPreviousEncountered;
+	// private int repOkNb = -1; // not used
+	// private boolean nullNextEncountered; // not used
+	// private boolean nullPreviousEncountered; // not used
 	
 	private static final char B = ' '; // final variable for the Blank
 	
@@ -50,8 +50,6 @@ public class TapeA_B implements Tape {
 		
 		// finish the tape
 		readhead.next = null;
-		nullNextEncountered = true;
-		nullPreviousEncountered = (readhead.previous == null);
 	}
 	
 	/**
@@ -157,12 +155,12 @@ public class TapeA_B implements Tape {
 	public void leftMove() {
 		try {
 			// case of basic tape with only one box with B inside
-			if (nullNextEncountered && nullPreviousEncountered && isSymbol(B))
+			if (readhead.next == null && readhead.previous == null && isSymbol(B))
 				return;
 			
 			// case of we are leaving a end of the tape and it is B 
 			// so we have to delete the last box ton maintain the invariant
-			if (nullNextEncountered && isSymbol(B))
+			if (readhead.next == null && isSymbol(B))
 				readhead.previous.next = null;
 		} catch (Exception e) {
 			return; // problem with isSymbol: should not happen because the
@@ -170,15 +168,13 @@ public class TapeA_B implements Tape {
 		}
 
 		// case of end of the tape and we have to go into the B territory
-		if (nullPreviousEncountered){
+		if (readhead.previous == null){
 			readhead.previous = new Cell();
 			readhead.previous.next = readhead;
 		}
 
 		// normal case
 		readhead = readhead.previous;
-		nullPreviousEncountered = (readhead.previous == null);
-		nullNextEncountered = false;
 	}
 
 	/**
@@ -192,25 +188,23 @@ public class TapeA_B implements Tape {
 	public void rightMove() {
 		try {
 		// case of basic tape with only one box with B inside
-			if (nullPreviousEncountered && nullNextEncountered && isSymbol(B))
+			if (readhead.previous == null && readhead.next == null && isSymbol(B))
 				return;
 			// case of we are leaving a end of the tape and it is B 
 			// so we have to delete the last box ton maintain the invariant
-			if (nullPreviousEncountered && isSymbol(B)) // readhead.previous == null
+			if (readhead.previous == null && isSymbol(B)) // readhead.previous == null
 				readhead.next.previous = null;
 		} catch (Exception e) {
 			return; // problem with isSymbol: should not happen because the
 			        // symbol has been checked before (constructor or putSymbol)
 		}
 		// case of end of the tape and we have to go into the B territory
-		if (nullNextEncountered){
+		if (readhead.next == null){
 			readhead.next = new Cell();
 			readhead.next.previous = readhead;
 		}
 		// normal case
 		readhead = readhead.next;
-		nullNextEncountered = (readhead.next == null);
-		nullPreviousEncountered = false;
 	}
 
 	/**
