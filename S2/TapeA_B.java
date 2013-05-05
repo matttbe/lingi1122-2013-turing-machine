@@ -35,7 +35,8 @@ public class TapeA_B implements Tape {
 			tempNew.content = initChar[i];
 			tempNew.previous = readhead;
 			readhead = tempNew;
-			readhead.previous.next = readhead;
+			if (readhead.previous != null)
+				readhead.previous.next = readhead;
 			i++;
 		}
 		
