@@ -50,14 +50,9 @@
 Nous n'avons pas rencontrés énormément de problèmes pour implémenter le squelette qui nous était donné. Seul ont été des variables d'état nous étant inutile ou non spécifiées :
 \begin{itemize}
 \item repOkNb et checkedFor : Ces deux variables d'instance respectivement des classes TapeA\_B et Cell ne nous étaient pas spécifiées clairement. Apparament, elles devaient servir à la méthode repOk mais nous ne leur avont trouvé aucune utilité. Comme nous vérifions au fur et à mesure de bien être linké dans les deux sens au maillon précédent, nous ne devons pas les marquer mais simplement vérifier que nous ne retombont pas sur le premier maillon. Ainsi dans le cas d'une boucle qui arriverais sur un des maillons déjà testé, en testant le maillon précédent, nous savons voir qu'on ne revient pas sur nos pas et donc qu'il y a une boucle quelque part.
-\item NullPreviousEncountered et NullNextEncountered : Pour ces deux variables, nous savions à quoi elles étaient utile, c'est pourquoi nous les avons utilisées. Maintenant, il nous semblait que leur existance n'était pas obligatoire car elles indiquaient si le maillons 
-
-
+\item NullPreviousEncountered et NullNextEncountered : Pour ces deux variables, nous savions à quoi elles étaient utile, c'est pourquoi nous les avons utilisées. Maintenant, il nous semblait que leur existance n'était pas obligatoire car elles indiquaient si il existe un maillon à droite ou gauche. C'est donc une redondance par rapport au simple fait de tester si la référence vers la Cell previous ou la Cell next de readhead est null. C'est donc une source d'erreur qui nous semble inutile.
 \end{itemize}
 
-Nous n'avons cependant pas utilisé la variable d'instance de TapeA\_B repOkNb et celle de Cell checkedFor car leur utilité n'était pas expliquée et nous ne leur en avons pas trouvé.
-
-Les variables NullPreviousEncountered et NullNextEncountered ne nous semblaient également pas très utile, car nous devions les mettre à jour et les tester à chaque déplacement alors qu'elles sont en redondance avec previous et next de la Cell référencée par readhead
 
 
 
