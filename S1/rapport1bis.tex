@@ -47,6 +47,8 @@
 % \tableofcontents
 \section{Sous-Machines}
 \subsection{\texttt{findFirstBlankOnTheLeft()} (\texttt{F1BL})}
+\paragraph{But:} Cette méthode permet de déplacer la t\^ete de lecture jusqu'à la prochaine case contenant un Blanc à gauche de la case où se trouvait la tête de lecture au départ.
+\paragraph{Signature:} \texttt{public void findFirstBlankOnTheLeft()}
 \paragraph{Pré:} La tête de lecture se trouve sur un caractère quelconque du ruban.
 \begin{verbatim}
 -------------------------------------------------v---------------------
@@ -62,6 +64,8 @@ où C est un caractère quelconque
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{findFirstBlankOnTheRight()} (\texttt{F1BR})}
+\paragraph{But:} Cette méthode permet de déplacer la t\^ete de lecture jusqu'à la prochaine case contenant un Blanc à droite de la case où se trouvait la tête de lecture au départ.
+\paragraph{Signature:} \texttt{public void findFirstBlankOnTheRight()}
 \paragraph{Pré:} La tête de lecture se trouve sur un caractère quelconque du ruban.
 \begin{verbatim}
 ---------------------v-------------------------------------------------
@@ -78,6 +82,8 @@ où C est un caractère quelconque
 où C est un caractère quelconque
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{convertToUnaryLeft()}}
+\paragraph{But:}
+\paragraph{Signature:}
 \paragraph{Pré:} La tête de lecture se trouve sur un blanc et, à sa gauche, se trouve une suite valide en binaire délimitée par un blanc.
 \begin{verbatim}
 ---------------------------------------v---------------------
@@ -93,6 +99,8 @@ La taille de cette suite peut être différente de la précédente, les changeme
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{convertToUnaryRight()}}
+\paragraph{But:}
+\paragraph{Signature:}
 \paragraph{Pré:}
 La tête de lecture se trouve sur un blanc et, à sa droite, se trouve une suite valide en binaire délimitée par un blanc.
 \begin{verbatim}
@@ -110,6 +118,8 @@ La taille de cette suite peut être différente de la précédente, les changeme
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{convertToBinaryLeft()}}
+\paragraph{But:}
+\paragraph{Signature:}
 \paragraph{Pré:}
 La tête de lecture se trouve sur un blanc et, à sa gauche, se trouve une suite valide en unaire délimitée par un blanc.
 \begin{verbatim}
@@ -127,6 +137,8 @@ La taille de cette suite peut être différente de la précédente, les changeme
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{convertToBinaryRight()}}
+\paragraph{But:}
+\paragraph{Signature:}
 \paragraph{Pré:}
 La tête de lecture se trouve sur un blanc et, à sa droite, se trouve une suite valide en unaire délimitée par un blanc.
 \begin{verbatim}
@@ -144,6 +156,8 @@ La taille de cette suite peut être différente de la précédente, les changeme
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  ^^^^ Addition and substraction ^^^^
 \subsection{\texttt{addOneBlankAfterTheFirstBlankOnTheLeft()}}
+\paragraph{But:}
+\paragraph{Signature:}
 \paragraph{Pré:} La tête de lecture est placée sur un blanc. À gauche se situe une suite de caractères délimitée par un blanc.
 \begin{verbatim}
 -------------------------------------------v---------------------
@@ -160,6 +174,8 @@ La taille de cette suite peut être différente de la précédente, les changeme
 \end{small}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{copyLeftOfLeftSequence()}}
+\paragraph{But:}
+\paragraph{Signature:}
 \paragraph{Pré:} La tête de lecture est placée sur un blanc. À gauche se situe une suite de 1 délimitée par un blanc.
 \begin{verbatim}
 --------------------------------------------------------v---------------------
@@ -176,6 +192,8 @@ La taille de cette suite peut être différente de la précédente, les changeme
 \end{footnotesize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{eraseRight()}}
+\paragraph{But:}
+\paragraph{Signature:}
 \paragraph{Pré:}
 La tête de lecture se trouve sur un blanc, à sa droite se trouve une représentation d'un nombre délimitée par une blanc.
 \begin{verbatim}
@@ -192,6 +210,8 @@ La tête de lecture se trouve au même endroit que précédemment. La partie gau
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{copyRightOfLeftSequence()}}
+\paragraph{But:}
+\paragraph{Signature:}
 \paragraph{Pré:} La tête de lecture est placée sur un blanc, à gauche duquel se situe une suite de 1.
 \begin{verbatim}
 --------------------------------v---------------------
@@ -208,6 +228,8 @@ La tête de lecture se trouve au même endroit que précédemment. La partie gau
 \end{small}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{incrementLeft()}}
+\paragraph{But:}
+\paragraph{Signature:}
 \paragraph{Pré:} 
 La tête de lecture se trouve sur un blanc du ruban. A sa droite se trouve une représentation unaire d'un nombre délimité par un blanc (si il n'y a que des blancs le nombre est 0).
 \begin{verbatim}
@@ -224,6 +246,8 @@ La tête de lecture se trouve à la même position. Le nombre unaire a droite a 
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{shiftSubstract()}}
+\paragraph{But:}
+\paragraph{Signature:}
 \paragraph{Pré:}
 La tête de lecture se trouve sur un blanc séparant deux nombres en représentation unaire. Ces deux nombres sont délimités par un blanc.
 \begin{small}
