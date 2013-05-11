@@ -203,11 +203,13 @@ La tête de lecture se trouve sur un blanc, à sa droite se trouve une représen
 \end{verbatim}
 \paragraph{Post:} 
 La tête de lecture se trouve au même endroit que précédemment. La partie gauche du ruban n'a pas été modifiée. La représentation du nombre à sa droite délimité par un blanc a été effacée (remplacée par des blancs).
+\begin{small}
 \begin{verbatim}
 ----------------------------------v-----------------------------------------------
  suite de caractères non modifiés|B|suite de B|B|suite de caractères non modifiés
 ----------------------------------------------------------------------------------
 \end{verbatim}
+\end{small}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{copyRightOfLeftSequence()}}
 \paragraph{But:} Cette méthode à pour but de recopier la suite de 1, se trouvant entre le premier blanc à gauche de la tête de lecture et celle-ci, à droite de la tête de lecture, de telle sorte que le premier caractère de la suite recopiée soit à l'emplacement du premier blanc à droite de la tête de lecture.
@@ -299,7 +301,7 @@ Pour finir, se replacer à l'extrême droite du nombre final et appliquer \textt
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Soustraction}
-Premièrement, on place la tête de lecture entre les deux nombres grâce à \texttt{findFirstBlankOnTheLeft()}.
+Premièrement, on place la tête de lecture entre les deux nombres grâce à \texttt{findFirstBlankOn\-The\-Left()}.
 Ensuite, on utilise \texttt{convertToUnaryRight()} et \texttt{convertToUnaryLeft()} pour transformer les deux nombres en unaire. Le blanc entre les deux nombres est conservé tout comme les deux premières étapes de la section \ref{add}. Un exemple ici la soustraction de 5 par 3.
 \begin{verbatim}
 -----------------------------v---------------------------
@@ -332,9 +334,9 @@ Pour finir, il ne reste plus qu'à appliquer \texttt{convertToBinaryLeft()}. La 
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Multiplication}
-Premièrement, on place la tête de lecture entre les deux nombres grâce à \texttt{findFirstBlankOnTheLeft()}.
+Premièrement, on place la tête de lecture entre les deux nombres grâce à \texttt{findFirstBlankOn\-The\-Left()}.
 Ensuite, on utilise \texttt{convertToUnaryRight()} et \texttt{convertToUnaryLeft()} pour transformer les deux nombres en unaire. Le blanc entre les deux nombres est conservé tout comme les deux premières étapes de la section \ref{add}.\\
-Il faut ensuite placer un blanc à gauche du premier blanc de gauche grâce à \texttt{addOneBlankAfterTheFirst\-BlankOnTheLeft()}.
+Il faut ensuite placer un blanc à gauche du premier blanc de gauche grâce à \texttt{addOneBlankAfter\-The\-First\-BlankOnTheLeft()}.
 \begin{verbatim}
 --------------------------------------v------------------------------------
  suite de caractères|B|B|suite de m 1|B|suite de n 1|B|suite de caractères
@@ -347,30 +349,30 @@ Ensuite, on décrémente le nombre de droite par la droite tant que cette suite 
 ----------------------------------------------------------------------------
 \end{verbatim}
 À chaque décrémentation, on appelle \texttt{copyLeftOfLeftSequence()} pour recopier la suite de $m$ 1 à droite du deuxième blanc en décalant ce blanc vers la gauche et en le remplaçant par un blanc.
-\begin{small}
+\begin{footnotesize}
 \begin{verbatim}
 ---------------------------------------------------v---------------------------------------
  suite de caractères|B|suite de m 1|B|suite de m 1|B|suite de n-1 1|BB|suite de caractères
 -------------------------------------------------------------------------------------------
 \end{verbatim}
-\end{small}
+\end{footnotesize}
 Ces opérations sont donc à réaliser tant que la suite de droite n'est pas vide (2 blancs).
-\begin{footnotesize}
+\begin{scriptsize}
 \begin{verbatim}
 --------------------------------------------------------------------v------------------------------------
  suite de caractères|B|suite de m 1|...|suite de m 1|B|suite de m 1|B|suite de n B|B|suite de caractères
 ---------------------------------------------------------------------------------------------------------
 \end{verbatim}
-\end{footnotesize}
+\end{scriptsize}
 Il faut maintenant placer la tête de lecture sur le blanc de gauche (avec \texttt{findFirstBlankOnTheLeft()}). Le résultat de la multiplication se trouve à gauche de ce blanc, on peut donc supprimer tout ce qu'il y a à droite en utilisant \texttt{eraseRight()}.
-\begin{footnotesize}
+\begin{scriptsize}
 \begin{verbatim}
 -----------------------------------------------------v---------------------------------------------------
  suite de caractères|B|suite de m 1|...|suite de m 1|B|suite de m B|B|suite de n B|B|suite de caractères
 ---------------------------------------------------------------------------------------------------------
 \end{verbatim}
-\end{footnotesize}
-On retransforme ensuite le nombre unaire représentant le résultat en binaire avec \texttt{convertToBinaryLeft()}.
+\end{scriptsize}
+On retransforme ensuite le nombre unaire représentant le résultat en binaire avec \texttt{convertTo\-Binary\-Left()}.
 \begin{verbatim}
 ---------------------------------------v----------------------------------------
  suite de caractères|B|suite de 0 et 1|B|suite de m+n+1 B|B|suite de caractères
@@ -436,7 +438,7 @@ et d'obtenir :
 ------------------------------------------------------------------------
 \end{verbatim}
 \end{small}
-On retransforme ensuite les nombre unaire en binaire avec \texttt{convertToBinaryLeft()} et \texttt{convertToBinaryRight()}.
+On retransforme ensuite les nombre unaire en binaire avec \texttt{convertToBinaryLeft()} et \texttt{convert\-To\-Binary\-Right()}.
 \begin{small}
 \begin{verbatim}
 --------------------------------------v-----------------------------------
