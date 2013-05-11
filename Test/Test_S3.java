@@ -1,5 +1,5 @@
 
-public class Test
+public class Test_S3
 {
 
 	/**
