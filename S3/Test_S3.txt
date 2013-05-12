@@ -5,24 +5,25 @@ multiply: 1010[ ] expected: 1010 => 10
 divide: 10 1[ ] expected: 10 1 => 2 1
 
 101 0 => 5 0
-add: 110[ ] expected: 101 => 5
+add: 110[ ] expected: 101 => 5			=> ERROR
 substract: 101[ ] expected: 101 => 5
-multiply: [ ] expected: 0 => 0
+multiply: [ ] expected: 0 => 0			=> ERROR
+divide: inf. loop				=> ERROR
 
 0 10 => 0 2
 add: 10[ ] expected: 10 => 2
 substract: 0[ ] expected: 0 => 0
-multiply: [ ] expected: 0 => 0
-divide: Exception... [ ]11 expected: 0 0 => 0 0
+multiply: [ ] expected: 0 => 0			=> ERROR
+divide: Exception... [ ]11 expected: 0 0 => 0 0	=> ERROR
 
 0 0 => 0 0
-add: 1[ ] expected: 0 => 0
-substract: [ ] expected: 0 => 0
-multiply: [ ] expected: 0 => 0
-divide: Exception... [ ] expected: 0 0 => 0 0
+add: 1[ ] expected: 0 => 0			=> ERROR
+substract: [ ] expected: 0 => 0			=> ERROR
+multiply: [ ] expected: 0 => 0			=> ERROR
+divide: Exception... [ ] expected: 0 0 => 0 0	=> Exception OK
 
 10 10 => 2 2
 add: 100[ ] expected: 100 => 4
-substract: [ ] expected: 0 => 0
+substract: [ ] expected: 0 => 0			=> ERROR
 multiply: 100[ ] expected: 100 => 4
-divide: Exception... 11[ ]11 expected: 1 0 => 1 0
+divide: Exception... 11[ ]11 expected: 1 0 => 1 0 => ERROR
