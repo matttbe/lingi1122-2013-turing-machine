@@ -8,6 +8,8 @@ public class Test_S3
 	public static void main (String[] args)
 	{
 		Tape tape = null;
+
+		System.out.println ("Test1: machines");
 		try
 		{
 			final String cTestTapes[] = {"101 10", "101 0", "0 10", "0 0", "10 10"};
@@ -89,10 +91,87 @@ public class Test_S3
 					}
 				}
 			}
-		} catch (Exception e) // if error in TapeA_B
+		} catch (Exception e) // if exception in TapeA_B
 		{
 			e.printStackTrace();
 		}
+
+		//_________________ Test sub-machines
+		System.out.println ("\n\nTest 2: sub-machines\n");
+		try
+		{
+			String cIn, cOut, cExpected;
+			int iExpected;
+
+			String cInputsConvToUnary[] = {"101", "0", "00"}; // should receive valid binary: not "B"
+			for (int i = 0; i < cInputsConvToUnary.length; i++)
+			{
+				String cInput = cInputsConvToUnary[i];
+
+				// convertToUnaryLeft
+				tape = new TapeA_B (cInput);
+				cIn = tape.toString ();
+				MTA_B.convertToUnaryLeft (tape);
+				cOut = tape.toString ();
+				iExpected = Integer.parseInt (cInput, 2); // cInput: binary
+				cExpected = "";
+				while (iExpected-- > 0)
+					cExpected += "1"; // toUnary: 1 x iExpected
+				cExpected += "[ ]"; // at the end
+				printSubMachineTest ("convertToUnaryLeft", cIn, cOut, cExpected);
+
+				// convertToUnaryRight
+				tape = new TapeA_B (cInput);
+				MTA_B.findFirstBlankOnTheLeft (tape); //[ ]00
+				cIn = tape.toString ();
+				MTA_B.convertToUnaryRight (tape);
+				cOut = tape.toString ();
+				iExpected = Integer.parseInt (cInput, 2); // cInput: binary
+				cExpected = "[ ]"; // at the beginning
+				while (iExpected-- > 0)
+					cExpected += "1"; // toUnary: 1 x iExpected
+				printSubMachineTest ("convertToUnaryRight", cIn, cOut, cExpected);
+			}
+
+			System.out.println ();
+
+			String cInputsConvToBinar[] = {"11111", "1", ""}; // should receive valid binary: not "B"
+			for (int i = 0; i < cInputsConvToBinar.length; i++)
+			{
+				String cInput = cInputsConvToBinar[i];
+
+				// convertToBinaryLeft
+				tape = new TapeA_B (cInput);
+				cIn = tape.toString ();
+				MTA_B.convertToBinaryLeft (tape);
+				cOut = tape.toString ();
+				cExpected = Integer.toBinaryString (cInput.length ()) + "[ ]"; // cInput = unary => number of chars
+				printSubMachineTest ("convertToBinaryLeft", cIn, cOut, cExpected);
+
+				// convertToBinaryRight
+				tape = new TapeA_B (cInput);
+				MTA_B.findFirstBlankOnTheLeft (tape); //[ ]00
+				cIn = tape.toString ();
+				MTA_B.convertToBinaryRight (tape);
+				cOut = tape.toString ();
+				cExpected = "[ ]" + Integer.toBinaryString (cInput.length ()); // cInput = unary => number of chars
+				printSubMachineTest ("convertToBinaryRight", cIn, cOut, cExpected);
+			}
+		} catch (Exception e) // if exception in TapeA_B
+		{
+			e.printStackTrace();
+		}
+		
+	}
+
+	private static void printSubMachineTest (String cMeth, String cIn, String cOut, String cExpected)
+	{
+		boolean bSame = cOut.compareTo (cExpected) == 0;
+		System.out.print (cMeth + ":\tIn: '" + cIn + "' ;\tOut: '" + cOut + "'\t=> expected: '" + cExpected + "'\t=> ");
+		if (bSame)
+			System.out.println ("OK");
+		else
+			System.out.println ("ERROR");
 	}
 
 }
