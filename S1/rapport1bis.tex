@@ -388,15 +388,13 @@ On retransforme ensuite le nombre unaire représentant le résultat en binaire a
 %% Ou: on inverse les deux: BB111B11111B ; on calcule => B1B111B11BBBB => il faut à nouveau déplacer... donc autant prend
 %% On n'a donc pas besoin de marqueurs (enfin, ils devront en utiliser dans la sous-machine qui remplace les caractères à gauches par le nombre de blancs correspondant au diviseur)
 %% PS: attention qu'il faut vérifier quand s'arrêter... => on arrive à 2/3, il ne faut pas commencer à remplacer des blancs... et on ne peut pas compter avant => on peut utiliser une exception où, si on veut diviser et qu'il n'y a pas assez à diviser, on annule les changements: càd, on ne remplace pas les 1 par des blancs mais par des marqueurs, si tout va bien (pas d'exception, on remplace les marqueurs par des B et si non, par des 1. S'il n'y a pas d'exception, on ajoute 1 au quotient (donc après).
-Ensuite, on transforme les deux nombres à multiplier en unaire comme expliqué dans la section \ref{add}. Il faut également ajouter un blanc à gauche grâce à \texttt{addOneBlankAfterTheFirstBlankOnTheLeft()}.
+Ensuite, on transforme les deux nombres à multiplier en unaire comme expliqué dans la section \ref{add}.\\Il faut également ajouter un blanc à gauche grâce à \texttt{addOneBlankAfterTheFirstBlank\-On\-The\-Left()}.
 Notre ruban est alors de la forme:
-\begin{small}
 \begin{verbatim}
-----------------------------------v--------------------------------
- suite de caractères|BB|Dividende|B|Diviseur|B|suite de caractères
--------------------------------------------------------------------
+-----------------------------------v--------------------------------
+ suite de caractères|B|B|Dividende|B|Diviseur|B|suite de caractères
+--------------------------------------------------------------------
 \end{verbatim}
-\end{small}
 Ensuite on doit tester si le dividende est plus grand que le diviseur ou non. 
 Dans le cas où il est plus grand on effectue une boucle, on utilise la méthode \texttt{shiftSubstract()} pour soustraire le diviseur du dividende (qui sera notre reste).
 \begin{small}
