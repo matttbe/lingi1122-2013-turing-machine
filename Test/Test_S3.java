@@ -103,9 +103,10 @@ public class Test_S3
 			String cIn, cOut, cExpected;
 			int iExpected;
 
-			String cInputsConvToUnary[] = {"101", "0", "00"}; // should receive valid binary: not "B"
+			String cInputsConvToUnary[] = {"101", "0", "00"}; // should receive valid binary: only 1 or 0 (not only "B")
 			for (int i = 0; i < cInputsConvToUnary.length; i++)
 			{
+				//_____________________________________ TO UNARY
 				String cInput = cInputsConvToUnary[i];
 
 				// convertToUnaryLeft
@@ -134,8 +135,9 @@ public class Test_S3
 			}
 
 			System.out.println ();
+			//_____________________________________ TO BINARY
 
-			String cInputsConvToBinar[] = {"11111", "1", ""}; // should receive valid binary: not "B"
+			String cInputsConvToBinar[] = {"11111", "1", ""}; // should receive valid unary: only 1 or 'B'
 			for (int i = 0; i < cInputsConvToBinar.length; i++)
 			{
 				String cInput = cInputsConvToBinar[i];
