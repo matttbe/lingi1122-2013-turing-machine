@@ -46,7 +46,7 @@
 \maketitle
 % \tableofcontents
 \section{Sous-Machines}
-\subsection{\texttt{findFirstBlankOnTheLeft()} (\texttt{F1BL})}
+\subsection{\texttt{findFirstBlankOnTheLeft(Tape t)} (\texttt{F1BL})}
 \paragraph{But:} Cette méthode permet de déplacer la t\^ete de lecture jusqu'à la prochaine case contenant un Blanc à gauche de la case où se trouvait la tête de lecture au départ.
 \paragraph{Signature:} \texttt{public void findFirstBlankOnTheLeft()}
 \paragraph{Pré:} La tête de lecture se trouve sur un caractère quelconque du ruban.
@@ -63,7 +63,7 @@ où C est un caractère quelconque
 -----------------------------------------------------------------------
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{\texttt{findFirstBlankOnTheRight()} (\texttt{F1BR})}
+\subsection{\texttt{findFirstBlankOnTheRight(Tape t)} (\texttt{F1BR})}
 \paragraph{But:} Cette méthode permet de déplacer la t\^ete de lecture jusqu'à la prochaine case contenant un Blanc à droite de la case où se trouvait la tête de lecture au départ.
 \paragraph{Signature:} \texttt{public void findFirstBlankOnTheRight()}
 \paragraph{Pré:} La tête de lecture se trouve sur un caractère quelconque du ruban.
@@ -83,7 +83,7 @@ où C est un caractère quelconque
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{convertToUnaryLeft()}}
 \paragraph{But:} Cette méthode permet de convertir un nombre binaire se trouvant à gauche de la tête de lecture (la dernière case occupée par le nombre binaire étant la case juste à gauche de celle où se trouve la tête) en un nombre unaire (placé à gauche de la tête de lecture, le dernier caractère du nombre se trouvant sur la case juste à gauche de celle de la tête de lecture) tout en ne touchant pas à la partie du ruban à droite de la tête de lecture.
-\paragraph{Signature:} \texttt{public void convertToUnaryLeft()}
+\paragraph{Signature:} \texttt{public void convertToUnaryLeft(Tape t)}
 \paragraph{Pré:} La tête de lecture se trouve sur un blanc et, à sa gauche, se trouve une suite valide en binaire délimitée par un blanc.
 \begin{verbatim}
 ---------------------------------------v---------------------
@@ -100,7 +100,7 @@ La taille de cette suite peut être différente de la précédente, les changeme
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{convertToUnaryRight()}}
 \paragraph{But:} Cette méthode permet de convertir un nombre binaire se trouvant à droite de la tête de lecture (la première case occupée par le nombre binaire étant la case juste à droite de celle où se trouve la tête) en un nombre unaire (placé à droite de la tête de lecture, le premier caractère du nombre se trouvant sur la case juste à droite de celle de la tête de lecture) tout en ne touchant pas à la partie du ruban à gauche de la tête de lecture.
-\paragraph{Signature:} \texttt{public void convertToUnaryRight()}
+\paragraph{Signature:} \texttt{public void convertToUnaryRight(Tape t)}
 \paragraph{Pré:}
 La tête de lecture se trouve sur un blanc et, à sa droite, se trouve une suite valide en binaire délimitée par un blanc.
 \begin{verbatim}
@@ -119,7 +119,7 @@ La taille de cette suite peut être différente de la précédente, les changeme
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{convertToBinaryLeft()}}
 \paragraph{But:} Cette méthode permet de convertir un nombre unaire se trouvant à gauche de la tête de lecture (la dernière case occupée par le nombre unaire étant la case juste à gauche de celle où se trouve la tête) en un nombre binaire (placé à gauche de la tête de lecture, le dernier caractère du nombre se trouvant sur la case juste à gauche de celle de la tête de lecture) tout en ne touchant pas à la partie du ruban à droite de la tête de lecture.
-\paragraph{Signature:} \texttt{public void convertToBinaryLeft()}
+\paragraph{Signature:} \texttt{public void convertToBinaryLeft(Tape t)}
 \paragraph{Pré:}
 La tête de lecture se trouve sur un blanc et, à sa gauche, se trouve une suite valide en unaire délimitée par un blanc.
 \begin{verbatim}
@@ -139,7 +139,7 @@ La taille de cette suite peut être différente de la précédente, les changeme
 \subsection{\texttt{convertToBinaryRight()}}
 \paragraph{But:} Cette méthode permet de convertir un nombre unaire se trouvant à droite de la tête de lecture (la première case occupée par le nombre unaire étant la case juste à droite de celle où se trouve la tête) en un nombre binaire (placé à droite de la tête de lecture, le premier caractère du nombre se trouvant sur la case juste à droite de celle de la tête de lecture) tout en ne touchant pas à la partie du ruban à gauche de la tête de lecture.
 \paragraph{Signature:}
-\paragraph{Pré:} \texttt{public void convertToBinaryRight()}
+\paragraph{Pré:} \texttt{public void convertToBinaryRight(Tape t)}
 La tête de lecture se trouve sur un blanc et, à sa droite, se trouve une suite valide en unaire délimitée par un blanc.
 \begin{verbatim}
 ---------------------v----------------------------------
@@ -157,7 +157,7 @@ La taille de cette suite peut être différente de la précédente, les changeme
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  ^^^^ Addition and substraction ^^^^
 \subsection{\texttt{addOneBlankAfterTheFirstBlankOnTheLeft()}}
 \paragraph{But:} Cette méthode permet de placer un caractère Blanc dans la première case à gauche de la première case contenant déjà un caractère Blanc à gauche de la tête de lecture.
-\paragraph{Signature:} \texttt{public void addOneBlankAfterTheFirstBlankOnTheLeft()}
+\paragraph{Signature:} \texttt{public void addOneBlankAfterTheFirstBlankOnTheLeft(Tape t)}
 \paragraph{Pré:} La tête de lecture est placée sur un blanc. À gauche se situe une suite de caractères délimitée par un blanc.
 \begin{verbatim}
 -------------------------------------------v---------------------
@@ -175,7 +175,7 @@ La taille de cette suite peut être différente de la précédente, les changeme
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{copyLeftOfLeftSequence()}}
 \paragraph{But:} Cette méthode à pour but de recopier la suite de 1, se trouvant entre le premier blanc à gauche de la tête de lecture et celle-ci, à gauche de la tête de lecture, de telle sorte que le dernier caractère de la suite recopiée soit à l'emplacement du deuxième blanc à gauche de la tête de lecture.
-\paragraph{Signature:} \texttt{public void copyLeftOfLeftSequence()}
+\paragraph{Signature:} \texttt{public void copyLeftOfLeftSequence(Tape t)}
 \paragraph{Pré:} La tête de lecture est placée sur un blanc. À gauche se situe une suite de 1 délimitée par un blanc.
 \begin{verbatim}
 --------------------------------------------------------v---------------------
@@ -193,7 +193,7 @@ La taille de cette suite peut être différente de la précédente, les changeme
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{eraseRight()}}
 \paragraph{But:} Cette méthode à pour but de remplacer la suite de caractère non blanc se trouvant à droite de la tête de lecture et délimitée par celle-ci et le premier Blanc à droite de celle-ci par une suite de charactère Blanc.
-\paragraph{Signature:} \texttt{public void eraseRight()}
+\paragraph{Signature:} \texttt{public void eraseRight(Tape t)}
 \paragraph{Pré:}
 La tête de lecture se trouve sur un blanc, à sa droite se trouve une représentation d'un nombre délimitée par une blanc.
 \begin{verbatim}
@@ -213,7 +213,7 @@ La tête de lecture se trouve au même endroit que précédemment. La partie gau
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{copyRightOfLeftSequence()}}
 \paragraph{But:} Cette méthode à pour but de recopier la suite de 1, se trouvant entre le premier blanc à gauche de la tête de lecture et celle-ci, à droite de la tête de lecture, de telle sorte que le premier caractère de la suite recopiée soit à l'emplacement du premier blanc à droite de la tête de lecture.
-\paragraph{Signature:} \texttt{public void copyRightOfLeftSequence()}
+\paragraph{Signature:} \texttt{public void copyRightOfLeftSequence(Tape t)}
 \paragraph{Pré:} La tête de lecture est placée sur un blanc, à gauche duquel se situe une suite de 1.
 \begin{verbatim}
 --------------------------------v---------------------
@@ -231,7 +231,7 @@ La tête de lecture se trouve au même endroit que précédemment. La partie gau
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{incrementLeft()}}
 \paragraph{But:} Cette méthode permet l'incrémentation du nombre unaire placé juste à gauche de la tête de lecture. L'incrémentation se fait en rajoutant un charactère 1 dans la case contenant un Blanc dilimitant le nombre à gauche. On place également un Blanc à gauche de ce caractère d'incrémentation pour s'assurer que le nombre est tjs bien délimité par un Blanc de chaque coté.
-\paragraph{Signature:} \texttt{public void incrementLeft()}
+\paragraph{Signature:} \texttt{public void incrementLeft(Tape t)}
 \paragraph{Pré:} 
 La tête de lecture se trouve sur un blanc du ruban. A sa droite se trouve une représentation unaire d'un nombre délimité par un blanc (si il n'y a que des blancs le nombre est 0).
 \begin{verbatim}
@@ -249,7 +249,7 @@ La tête de lecture se trouve à la même position. Le nombre unaire a droite a 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{shiftSubstract()}}
 \paragraph{But:} Cette méthode soustrait le nombre unaire juste à droite de la tête de lecture du nombre unaire juste à gauche. La soustraction de fait de telle sorte que les 1 retirés le sont par la droite du nombre et au final on ramène le nombre de droite (inchangé) de telle sorte qu'il n'y aie qu'une case Blanche entre les deux nombres (case sur laquelle se trouve la tête de lecture).
-\paragraph{Signature:} \texttt{public void shiftSubstract()}
+\paragraph{Signature:} \texttt{public void shiftSubstract(Tape t)}
 \paragraph{Pré:}
 La tête de lecture se trouve sur un blanc séparant deux nombres en représentation unaire. Ces deux nombres sont délimités par un blanc.
 \begin{small}
