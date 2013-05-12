@@ -257,7 +257,7 @@ public class Test_S3
 			testSubMachinesCopy ();
 			System.out.println ();
 
-			//_____________________________________ Copy
+			//_____________________________________ Shift
 			testSubMachinesShift ();
 			System.out.println ();
 			
@@ -289,4 +289,3 @@ public class Test_S3
 		testSubMachines ();
 	}
 }
-
