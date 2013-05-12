@@ -205,7 +205,8 @@ public class Test_S3
 	{
 		String cIn, cOut, cExpected;
 
-		String cInputs[] = {"1111 1", "11 11", ""};
+		String cInputs[] = {"1111 1", "11 11", "", "111", "11 111"};
+		int i;
 		for (String cInput : cInputs)
 		{
 			tape = new TapeA_B (cInput);
@@ -213,7 +214,20 @@ public class Test_S3
 			cIn = tape.toString ();
 			MTA_B.shiftSubstract (tape);
 			cOut = tape.toString ();
-			cExpected = cOut;
+
+			if ((i = cInput.lastIndexOf (' ')) > -1) // two numbers, we only want to remove the first one
+			{
+				String cInputSplit[] = cInput.split (" ");
+				int iLengths[] = new int [2]; // only 2...
+				iLengths[1] = cInputSplit[1].length ();
+				iLengths[0] = cInputSplit[0].length() - iLengths[1];
+				cExpected = "";
+				while (iLengths[0]-- > 0)
+					cExpected += "1";
+				cExpected += cIn.substring (i);
+			}
+			else
+				cExpected = cIn;
 			printSubMachineTest ("shiftSubstract", cIn, cOut, cExpected);
 		}
 	}
