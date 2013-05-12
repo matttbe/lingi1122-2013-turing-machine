@@ -157,7 +157,7 @@ Comme dans leur code, pour retirer le 1 il ne font que se placer à la place th�
     \subsection{Soustraction}
 
 La soustraction marche lorsqu'elle est faite entre deux nombres non égaux, que le premier soit supérieur au deuxième ou le contraire. Le problème arrive lorsque les deux nombres sont les mêmes. Cela est dû à leur implémentation de \texttt{convertToBinaryLeft()}.
-Dans le cas de deux nombres égaux, le résultat de la soustraction est nul, le nombre unaire correspondant est donc représenté par aucun caractères. La conversion d'un nombre composé d'aucune barre en unaire devrait résulter en un O en binaire. Or ici ce n'est pas le cas.
+Dans le cas de deux nombres égaux, le résultat de la soustraction est nul, le nombre unaire correspondant est donc représenté par aucun caractères. La conversion d'un nombre composé d'aucune barre en unaire devrait résulter en un O en binaire. Or ici ce n'est pas le cas. Certes nous n'avions peut-être pas mentionné clairement la représentation du 0 en unaire mais nous supposions que c'était connu.
 
     \subsection{Multiplication}
 
@@ -166,9 +166,18 @@ Lorsqu'un des deux nombres est nul, le nombre unaire résultant est symbolisé p
 
     \subsection{Division}
 
-La division entre un dividende plus grand que le diviseur marche.
+La division entre un dividende plus grand que le diviseur marche. La division par 0, la division de 0 par un nombre différent de 0, la division d'un nombre par lui-même et le cas d'un reste nul ne sont pas bien pris en compte. 
+Lorsqu'on divise un nombre non nul par lui-même on obtient une boucle infinie car il ne testent pas si le nombre de droite est différent de 0 et effectue donc des soustractions de 0 du dividende, ce qui ne peut converger puisque le dividende reste constant.
+Pour la division de 0 par un autre nombre, on obtient une exception. Ainsi que pour la division d'un dividende plus petit que le diviseur. Cela est dû au fait qu'il testent si le diviseur est supérieur au dividende au départ, ils lancent une exception alors que ce n'était pas repris comme exception dans les spécification de divide(Tape t).
+Le fait que la division d'un nombre par lui-même n'est pas possible est également justifié par leur test de grandeur entre le dividende et le diviseur. Leur test demande que le diviseur soit strictement plus grand que le dividende.
+Dans le cas d'un reste nul, c'est de nouveau dû au problème de conversion de unaire à binaire dans le cas nul.
 \section{Vérification des invariants}
+Pour l'invariant de findFirstBlankOnTheLeft(tape t), le groupe a spécifié qu'il fallait que toute les cases entre la position courante de la tête de lecture et la position de départ étaient des cases blanches. Or il est possible que la case de départ soit blanche et aucun test n'est fait dessus pour le vérifier. 
+La même chose peut être observé pour findFirstBlankOnTheRight(Tape t).
+Les variants pour les méthodes de conversion en unaire ou en binaire sont corrects malgré l'utilisation de variables de type long. Pour l'invariant des méthode qui copient une séquence de caractères leur invariant de boucle est correct.
 \section{Vérification des variants}
+Pour la plupart des boucles, ils ont comme variant le nombre de caractères non banc restant avant le suivant Blanc. C'est un variant qui peut être correct à condition de se déplacer dans un même sens à chaque itération de la boucle car puisque sur un ruban on sait que le nombre de caractère non blanc est fini et on donc sur que ce nombre décroit dans une direction.
+Pour certain autres invariant, ils s'arrangent pour avoir une variable locale qu'ils décrémentent à chaque itération. Ce qui est également correct.
 \section{Autre}
 
     \subsubsection{Non-respect des consignes}
@@ -182,6 +191,7 @@ Quelques exemples et comment nous aurions fait pour éviter cela :
  ...B|B|1|1|1|B|1|1|B|B|B|...
 ------------------------------
 \end{verbatim}
+Pour marquer qu'on a vu le caractère, on place un 'a' à la place du 1.
 \begin{verbatim}
 --------------v---------------
  ...B|B|1|1|a|B|1|a|B|B|B|...
@@ -192,12 +202,93 @@ Quelques exemples et comment nous aurions fait pour éviter cela :
  ...B|B|1|a|a|B|a|a|B|B|B|...
 ------------------------------
 \end{verbatim}
-==> plus de caractère à changer à droite -> nbre de droite plus petit que celui de gauche
+On voit qu'il n'y a plus de caractère à changer à droite. Cela implique que le nombre de droite plus petit que celui de gauche. On stocke ca dans un boolean, puis on remplace les 'a' par des '1' à nouveau.
 \begin{verbatim}
 --------------v---------------
  ...B|B|1|1|1|B|1|1|B|B|B|...
 ------------------------------
 \end{verbatim}
 \item Ils utilisent également un long pour la copie d'un nombre unaire. Pour effectuer cela, de nouveau, ils auraient pus fonctionner avec un remplacement de symbole en allant ajouter un 1 chaque fois qu'il remplace en 1 dans la liste à copier. Puis remettre les caractères remplacé à 1.
+\item Ils ont également rajouté une méthode pour calculer le reste qui renvoie un long, ce qui n'était pas possible de faire.
 \end{itemize}
+\appendix
+\section{Code de test}
+\lstinputlisting{Test_S3.java}
+\section{Résultat de l'exécution}
+\begin{tiny}
+\begin{verbatim}
+Test1: machines
+
+101 10 => base10: 5 2
+add: 111[ ] expected: 111 => base10: 7     => OK
+substract: 11[ ] expected: 11 => base10: 3     => OK
+multiply: 1010[ ] expected: 1010 => base10: 10     => OK
+divide: 10 1[ ] expected: 10 1 => base10: 2 1     => OK
+
+101 0 => base10: 5 0
+add: 110[ ] expected: 101 => base10: 5     => ERROR
+substract: 101[ ] expected: 101 => base10: 5     => OK
+multiply: [ ] expected: 0 => base10: 0     => ERROR
+divide: infinite loop      => ERROR
+
+0 10 => base10: 0 2
+add: 10[ ] expected: 10 => base10: 2     => OK
+substract: 0[ ] expected: 0 => base10: 0     => OK
+multiply: [ ] expected: 0 => base10: 0     => ERROR
+divide: Exception... [ ]11 expected: 0 0 => base10: 0 0     => ERROR
+
+0 0 => base10: 0 0
+add: 1[ ] expected: 0 => base10: 0     => ERROR
+substract: [ ] expected: 0 => base10: 0     => ERROR
+multiply: [ ] expected: 0 => base10: 0     => ERROR
+divide: Exception...      => Exception OK
+
+10 10 => base10: 2 2
+add: 100[ ] expected: 100 => base10: 4     => OK
+substract: [ ] expected: 0 => base10: 0     => ERROR
+multiply: 100[ ] expected: 100 => base10: 4     => OK
+divide: Exception... 11[ ]11 expected: 1 0 => base10: 1 0     => ERROR
+
+10 11 => base10: 2 3
+add: 101[ ] expected: 101 => base10: 5     => OK
+substract: 0[ ] expected: 0 => base10: 0     => OK
+multiply: 110[ ] expected: 110 => base10: 6     => OK
+divide: Exception... 11[ ]111 expected: 0 10 => base10: 0 2     => ERROR
+
+100 10 => base10: 4 2
+add: 110[ ] expected: 110 => base10: 6     => OK
+substract: 10[ ] expected: 10 => base10: 2     => OK
+multiply: 1000[ ] expected: 1000 => base10: 8     => OK
+divide: 10 [ ] expected: 10 0 => base10: 2 0     => ERROR
+
+
+Test 2: sub-machines
+
+convertToUnaryLeft:    In: '101[ ]' ;    Out: '11111[ ]'    => expected: '11111[ ]'    => OK
+convertToUnaryRight:    In: '[ ]101' ;    Out: '[ ]11111'    => expected: '[ ]11111'    => OK
+convertToUnaryLeft:    In: '0[ ]' ;    Out: '[ ]'    => expected: '[ ]'    => OK
+convertToUnaryRight:    In: '[ ]0' ;    Out: '[ ]'    => expected: '[ ]'    => OK
+convertToUnaryLeft:    In: '00[ ]' ;    Out: '0 [ ]'    => expected: '[ ]'    => ERROR
+convertToUnaryRight:    In: '[ ]00' ;    Out: '[ ] 0'    => expected: '[ ]'    => ERROR
+
+convertToBinaryLeft:    In: '11111[ ]' ;    Out: '101[ ]'    => expected: '101[ ]'    => OK
+convertToBinaryRight:    In: '[ ]11111' ;    Out: '[ ]101'    => expected: '[ ]101'    => OK
+convertToBinaryLeft:    In: '1[ ]' ;    Out: '1[ ]'    => expected: '1[ ]'    => OK
+convertToBinaryRight:    In: '[ ]1' ;    Out: '[ ]1'    => expected: '[ ]1'    => OK
+convertToBinaryLeft:    In: '[ ]' ;    Out: '[ ]'    => expected: '0[ ]'    => ERROR
+convertToBinaryRight:    In: '[ ]' ;    Out: '[ ]'    => expected: '[ ]0'    => ERROR
+
+eraseRight:    In: '1111[ ]' ;    Out: '[ ]'    => expected: '[ ]'    => OK
+eraseRight:    In: '11 11[ ]' ;    Out: '[ ]   11'    => expected: '[ ]   11'    => OK
+eraseRight:    In: '[ ]' ;    Out: '[ ]'    => expected: '[ ]'    => OK
+
+copyLeftOfLeftSequence:    In: '1111[ ]' ;    Out: '1111 1111[ ]'    => expected: '1111 1111[ ]'    => OK
+copyLeftOfLeftSequence:    In: '11 11[ ]' ;    Out: '1111 11[ ]'    => expected: '1111 11[ ]'    => OK
+copyLeftOfLeftSequence:    In: '[ ]' ;    Out: '[ ]'    => expected: '[ ]'    => OK
+
+shiftSubstract:    In: '1111[ ]1' ;    Out: '111[ ]1'    => expected: '111[ ]1'    => OK
+shiftSubstract:    In: '11[ ]11' ;    Out: '[ ]11'    => expected: '[ ]11'    => OK
+shiftSubstract:    In: '[ ]' ;    Out: '[ ]'    => expected: '[ ]'    => OK
+\end{verbatim}
+\end{tiny}
 \end{document}
