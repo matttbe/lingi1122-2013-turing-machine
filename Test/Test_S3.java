@@ -1,18 +1,12 @@
-
 public class Test_S3
 {
+	private static Tape tape = null;
 
-	/**
-	 * @param args
-	 */
-	public static void main (String[] args)
+	private static void testMainMachines ()
 	{
-		Tape tape = null;
-
-		System.out.println ("Test1: machines");
 		try
 		{
-			final String cTestTapes[] = {"101 10", "101 0", "0 10", "0 0", "10 10"};
+			final String cTestTapes[] = {"101 10", "101 0", "0 10", "0 0", "10 10", "10 11", "100 10"};
 			final String cMethods[] = {"add", "substract", "multiply", "divide"};
 
 			for (int i = 0; i < cTestTapes.length; i++)
@@ -95,75 +89,168 @@ public class Test_S3
 		{
 			e.printStackTrace();
 		}
+	}
 
-		//_________________ Test sub-machines
-		System.out.println ("\n\nTest 2: sub-machines\n");
+	private static void testSubMachinesConvToUnary () throws Exception
+	{
+		String cIn, cOut, cExpected;
+		int iExpected;
+
+		String cInputsConvToUnary[] = {"101", "0", "00"}; // should receive valid binary: only 1 or 0 (not only "B")
+		for (int i = 0; i < cInputsConvToUnary.length; i++)
+		{
+			String cInput = cInputsConvToUnary[i];
+
+			// convertToUnaryLeft
+			tape = new TapeA_B (cInput);
+			cIn = tape.toString ();
+			MTA_B.convertToUnaryLeft (tape);
+			cOut = tape.toString ();
+			iExpected = Integer.parseInt (cInput, 2); // cInput: binary
+			cExpected = "";
+			while (iExpected-- > 0)
+				cExpected += "1"; // toUnary: 1 x iExpected
+			cExpected += "[ ]"; // at the end
+			printSubMachineTest ("convertToUnaryLeft", cIn, cOut, cExpected);
+
+			// convertToUnaryRight
+			tape = new TapeA_B (cInput);
+			MTA_B.findFirstBlankOnTheLeft (tape); //[ ]00
+			cIn = tape.toString ();
+			MTA_B.convertToUnaryRight (tape);
+			cOut = tape.toString ();
+			iExpected = Integer.parseInt (cInput, 2); // cInput: binary
+			cExpected = "[ ]"; // at the beginning
+			while (iExpected-- > 0)
+				cExpected += "1"; // toUnary: 1 x iExpected
+			printSubMachineTest ("convertToUnaryRight", cIn, cOut, cExpected);
+		}
+	}
+
+	private static void testSubMachinesConvToBinary () throws Exception
+	{
+		String cIn, cOut, cExpected;
+
+		String cInputsConvToBinar[] = {"11111", "1", ""}; // should receive valid unary: only 1 or 'B'
+		for (int i = 0; i < cInputsConvToBinar.length; i++)
+		{
+			String cInput = cInputsConvToBinar[i];
+
+			// convertToBinaryLeft
+			tape = new TapeA_B (cInput);
+			cIn = tape.toString ();
+			MTA_B.convertToBinaryLeft (tape);
+			cOut = tape.toString ();
+			cExpected = Integer.toBinaryString (cInput.length ()) + "[ ]"; // cInput = unary => number of chars
+			printSubMachineTest ("convertToBinaryLeft", cIn, cOut, cExpected);
+
+			// convertToBinaryRight
+			tape = new TapeA_B (cInput);
+			MTA_B.findFirstBlankOnTheLeft (tape); //[ ]00
+			cIn = tape.toString ();
+			MTA_B.convertToBinaryRight (tape);
+			cOut = tape.toString ();
+			cExpected = "[ ]" + Integer.toBinaryString (cInput.length ()); // cInput = unary => number of chars
+			printSubMachineTest ("convertToBinaryRight", cIn, cOut, cExpected);
+		}
+	}
+
+	private static void testSubMachinesErase () throws Exception
+	{
+		String cIn, cOut, cExpected;
+
+		String cInputs[] = {"1111", "11 11", ""};
+		int i;
+		for (String cInput : cInputs)
+		{
+			tape = new TapeA_B (cInput);
+			cIn = tape.toString ();
+			MTA_B.findFirstBlankOnTheLeft (tape);
+
+			cExpected = "[ ]";
+			if ((i = cInput.lastIndexOf (' ')) > -1) // two numbers, we only want to remove the first one
+			{
+				MTA_B.findFirstBlankOnTheLeft (tape); // more interesting to move left
+				for (int j = 0; j <= i; j++)
+					cExpected += " ";
+				cExpected += cInput.substring (i+1);
+			}
+			MTA_B.eraseRight (tape);
+			cOut = tape.toString ();
+			printSubMachineTest ("eraseRight", cIn, cOut, cExpected);
+		}
+	}
+
+	private static void testSubMachinesCopy () throws Exception
+	{
+		String cIn, cOut, cExpected;
+
+		String cInputs[] = {"1111", "11 11", ""};
+		int i;
+		for (String cInput : cInputs)
+		{ // idem right
+			tape = new TapeA_B (cInput);
+			cIn = tape.toString ();
+			MTA_B.copyLeftOfLeftSequence (tape);
+			cOut = tape.toString ();
+			if ((i = cInput.lastIndexOf (' ')) > -1) // two numbers, we only want to remove the first one
+				cExpected = cInput.substring (i+1) + cIn;
+			else
+				cExpected = cInput + (cInput.length () > 0 ? " " : "") + cIn;
+			printSubMachineTest ("copyLeftOfLeftSequence", cIn, cOut, cExpected);
+		}
+	}
+
+	private static void testSubMachinesShift () throws Exception
+	{
+		String cIn, cOut, cExpected;
+
+		String cInputs[] = {"1111 1", "11 11", ""};
+		for (String cInput : cInputs)
+		{
+			tape = new TapeA_B (cInput);
+			MTA_B.findFirstBlankOnTheLeft (tape);
+			cIn = tape.toString ();
+			MTA_B.shiftSubstract (tape);
+			cOut = tape.toString ();
+			cExpected = cOut;
+			printSubMachineTest ("shiftSubstract", cIn, cOut, cExpected);
+		}
+	}
+
+	private static void testSubMachines ()
+	{
 		try
 		{
-			String cIn, cOut, cExpected;
-			int iExpected;
+			/* no need to test addOneBlankAfterTheFirstBlankOnTheLeft,
+			 * findFirstBlankOnTheLeft, findFirstBlankOnTheRight and
+			 * incrementLeft: very basic...
+			 */
 
-			String cInputsConvToUnary[] = {"101", "0", "00"}; // should receive valid binary: only 1 or 0 (not only "B")
-			for (int i = 0; i < cInputsConvToUnary.length; i++)
-			{
-				//_____________________________________ TO UNARY
-				String cInput = cInputsConvToUnary[i];
-
-				// convertToUnaryLeft
-				tape = new TapeA_B (cInput);
-				cIn = tape.toString ();
-				MTA_B.convertToUnaryLeft (tape);
-				cOut = tape.toString ();
-				iExpected = Integer.parseInt (cInput, 2); // cInput: binary
-				cExpected = "";
-				while (iExpected-- > 0)
-					cExpected += "1"; // toUnary: 1 x iExpected
-				cExpected += "[ ]"; // at the end
-				printSubMachineTest ("convertToUnaryLeft", cIn, cOut, cExpected);
-
-				// convertToUnaryRight
-				tape = new TapeA_B (cInput);
-				MTA_B.findFirstBlankOnTheLeft (tape); //[ ]00
-				cIn = tape.toString ();
-				MTA_B.convertToUnaryRight (tape);
-				cOut = tape.toString ();
-				iExpected = Integer.parseInt (cInput, 2); // cInput: binary
-				cExpected = "[ ]"; // at the beginning
-				while (iExpected-- > 0)
-					cExpected += "1"; // toUnary: 1 x iExpected
-				printSubMachineTest ("convertToUnaryRight", cIn, cOut, cExpected);
-			}
-
+			//_____________________________________ TO UNARY
+			testSubMachinesConvToUnary ();
 			System.out.println ();
+
 			//_____________________________________ TO BINARY
+			testSubMachinesConvToBinary ();
+			System.out.println ();
 
-			String cInputsConvToBinar[] = {"11111", "1", ""}; // should receive valid unary: only 1 or 'B'
-			for (int i = 0; i < cInputsConvToBinar.length; i++)
-			{
-				String cInput = cInputsConvToBinar[i];
+			//_____________________________________ ERASE
+			testSubMachinesErase ();
+			System.out.println ();
 
-				// convertToBinaryLeft
-				tape = new TapeA_B (cInput);
-				cIn = tape.toString ();
-				MTA_B.convertToBinaryLeft (tape);
-				cOut = tape.toString ();
-				cExpected = Integer.toBinaryString (cInput.length ()) + "[ ]"; // cInput = unary => number of chars
-				printSubMachineTest ("convertToBinaryLeft", cIn, cOut, cExpected);
+			//_____________________________________ Copy
+			testSubMachinesCopy ();
+			System.out.println ();
 
-				// convertToBinaryRight
-				tape = new TapeA_B (cInput);
-				MTA_B.findFirstBlankOnTheLeft (tape); //[ ]00
-				cIn = tape.toString ();
-				MTA_B.convertToBinaryRight (tape);
-				cOut = tape.toString ();
-				cExpected = "[ ]" + Integer.toBinaryString (cInput.length ()); // cInput = unary => number of chars
-				printSubMachineTest ("convertToBinaryRight", cIn, cOut, cExpected);
-			}
+			//_____________________________________ Copy
+			testSubMachinesShift ();
+			System.out.println ();
+			
 		} catch (Exception e) // if exception in TapeA_B
 		{
 			e.printStackTrace();
 		}
-		
 	}
 
 	private static void printSubMachineTest (String cMeth, String cIn, String cOut, String cExpected)
@@ -175,6 +262,17 @@ public class Test_S3
 		else
 			System.out.println ("ERROR");
 	}
+	
+	/**
+	 * @param args
+	 */
+	public static void main (String[] args)
+	{
+		System.out.println ("Test1: machines");
+		testMainMachines ();
 
+		System.out.println ("\n\nTest 2: sub-machines\n");
+		testSubMachines ();
+	}
 }
 

@@ -1,29 +1,73 @@
-101 10 => 5 2
-add: 111[ ] expected: 111 => 7
-substract: 11[ ] expected: 11 => 3
-multiply: 1010[ ] expected: 1010 => 10
-divide: 10 1[ ] expected: 10 1 => 2 1
+Test1: machines
 
-101 0 => 5 0
-add: 110[ ] expected: 101 => 5			=> ERROR
-substract: 101[ ] expected: 101 => 5
-multiply: [ ] expected: 0 => 0			=> ERROR
-divide: inf. loop				=> ERROR
+101 10 => base10: 5 2
+add: 111[ ] expected: 111 => base10: 7	 => OK
+substract: 11[ ] expected: 11 => base10: 3	 => OK
+multiply: 1010[ ] expected: 1010 => base10: 10	 => OK
+divide: 10 1[ ] expected: 10 1 => base10: 2 1	 => OK
 
-0 10 => 0 2
-add: 10[ ] expected: 10 => 2
-substract: 0[ ] expected: 0 => 0
-multiply: [ ] expected: 0 => 0			=> ERROR
-divide: Exception... [ ]11 expected: 0 0 => 0 0	=> ERROR
+101 0 => base10: 5 0
+add: 110[ ] expected: 101 => base10: 5	 => ERROR
+substract: 101[ ] expected: 101 => base10: 5	 => OK
+multiply: [ ] expected: 0 => base10: 0	 => ERROR
+divide: infinite loop 	 => ERROR
 
-0 0 => 0 0
-add: 1[ ] expected: 0 => 0			=> ERROR
-substract: [ ] expected: 0 => 0			=> ERROR
-multiply: [ ] expected: 0 => 0			=> ERROR
-divide: Exception... [ ] expected: 0 0 => 0 0	=> Exception OK
+0 10 => base10: 0 2
+add: 10[ ] expected: 10 => base10: 2	 => OK
+substract: 0[ ] expected: 0 => base10: 0	 => OK
+multiply: [ ] expected: 0 => base10: 0	 => ERROR
+divide: Exception... [ ]11 expected: 0 0 => base10: 0 0	 => ERROR
 
-10 10 => 2 2
-add: 100[ ] expected: 100 => 4
-substract: [ ] expected: 0 => 0			=> ERROR
-multiply: 100[ ] expected: 100 => 4
-divide: Exception... 11[ ]11 expected: 1 0 => 1 0 => ERROR
+0 0 => base10: 0 0
+add: 1[ ] expected: 0 => base10: 0	 => ERROR
+substract: [ ] expected: 0 => base10: 0	 => ERROR
+multiply: [ ] expected: 0 => base10: 0	 => ERROR
+divide: Exception... 	 => Exception OK
+
+10 10 => base10: 2 2
+add: 100[ ] expected: 100 => base10: 4	 => OK
+substract: [ ] expected: 0 => base10: 0	 => ERROR
+multiply: 100[ ] expected: 100 => base10: 4	 => OK
+divide: Exception... 11[ ]11 expected: 1 0 => base10: 1 0	 => ERROR
+
+10 11 => base10: 2 3
+add: 101[ ] expected: 101 => base10: 5	 => OK
+substract: 0[ ] expected: 0 => base10: 0	 => OK
+multiply: 110[ ] expected: 110 => base10: 6	 => OK
+divide: Exception... 11[ ]111 expected: 0 10 => base10: 0 2	 => ERROR
+
+100 10 => base10: 4 2
+add: 110[ ] expected: 110 => base10: 6	 => OK
+substract: 10[ ] expected: 10 => base10: 2	 => OK
+multiply: 1000[ ] expected: 1000 => base10: 8	 => OK
+divide: 10 [ ] expected: 10 0 => base10: 2 0	 => ERROR
+
+
+Test 2: sub-machines
+
+convertToUnaryLeft:	In: '101[ ]' ;	Out: '11111[ ]'	=> expected: '11111[ ]'	=> OK
+convertToUnaryRight:	In: '[ ]101' ;	Out: '[ ]11111'	=> expected: '[ ]11111'	=> OK
+convertToUnaryLeft:	In: '0[ ]' ;	Out: '[ ]'	=> expected: '[ ]'	=> OK
+convertToUnaryRight:	In: '[ ]0' ;	Out: '[ ]'	=> expected: '[ ]'	=> OK
+convertToUnaryLeft:	In: '00[ ]' ;	Out: '0 [ ]'	=> expected: '[ ]'	=> ERROR
+convertToUnaryRight:	In: '[ ]00' ;	Out: '[ ] 0'	=> expected: '[ ]'	=> ERROR
+
+convertToBinaryLeft:	In: '11111[ ]' ;	Out: '101[ ]'	=> expected: '101[ ]'	=> OK
+convertToBinaryRight:	In: '[ ]11111' ;	Out: '[ ]101'	=> expected: '[ ]101'	=> OK
+convertToBinaryLeft:	In: '1[ ]' ;	Out: '1[ ]'	=> expected: '1[ ]'	=> OK
+convertToBinaryRight:	In: '[ ]1' ;	Out: '[ ]1'	=> expected: '[ ]1'	=> OK
+convertToBinaryLeft:	In: '[ ]' ;	Out: '[ ]'	=> expected: '0[ ]'	=> ERROR
+convertToBinaryRight:	In: '[ ]' ;	Out: '[ ]'	=> expected: '[ ]0'	=> ERROR
+
+eraseRight:	In: '1111[ ]' ;	Out: '[ ]'	=> expected: '[ ]'	=> OK
+eraseRight:	In: '11 11[ ]' ;	Out: '[ ]   11'	=> expected: '[ ]   11'	=> OK
+eraseRight:	In: '[ ]' ;	Out: '[ ]'	=> expected: '[ ]'	=> OK
+
+copyLeftOfLeftSequence:	In: '1111[ ]' ;	Out: '1111 1111[ ]'	=> expected: '1111 1111[ ]'	=> OK
+copyLeftOfLeftSequence:	In: '11 11[ ]' ;	Out: '1111 11[ ]'	=> expected: '1111 11[ ]'	=> OK
+copyLeftOfLeftSequence:	In: '[ ]' ;	Out: '[ ]'	=> expected: '[ ]'	=> OK
+
+shiftSubstract:	In: '1111[ ]1' ;	Out: '111[ ]1'	=> expected: '111[ ]1'	=> OK
+shiftSubstract:	In: '11[ ]11' ;	Out: '[ ]11'	=> expected: '[ ]11'	=> OK
+shiftSubstract:	In: '[ ]' ;	Out: '[ ]'	=> expected: '[ ]'	=> OK
+
