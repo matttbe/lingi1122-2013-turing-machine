@@ -1,0 +1,203 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[francais]{babel}
+\usepackage{amsmath} % math
+\usepackage{amssymb} % math
+\usepackage{gensymb} % math
+\usepackage{graphicx} % images
+% \usepackage{qtree}    % dessiner des arbres %% => texlive-humanities
+\usepackage{url}
+\urlstyle{sf}
+\usepackage[usenames]{color}
+\usepackage[french]{varioref} % \vpageref
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\definecolor{codeBlue}{rgb}{0,0,1}
+\definecolor{webred}{rgb}{0.5,0,0}
+\definecolor{codeGreen}{rgb}{0,0.5,0}
+\definecolor{codeGrey}{rgb}{0.6,0.6,0.6}
+\definecolor{webdarkblue}{rgb}{0,0,0.4}
+\definecolor{webgreen}{rgb}{0,0.3,0}
+\definecolor{webblue}{rgb}{0,0,0.8}
+\definecolor{orange}{rgb}{0.7,0.1,0.1}
+\usepackage{caption}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{listings}        % Pour l'insersion de fichiers de codes sources.
+\lstset{
+      language=Java,
+      flexiblecolumns=true,
+      numbers=left,
+      stepnumber=1,
+      numberstyle=\ttfamily\tiny,
+      keywordstyle=\ttfamily\textcolor{blue},
+      stringstyle=\ttfamily\textcolor{red},
+      commentstyle=\ttfamily\textcolor{green},
+      breaklines=true,
+      extendedchars=true,
+      basicstyle=\ttfamily\scriptsize,
+      showstringspaces=false
+    }
+%%%%%%%%%%%%%%%%%%%%
+\title{\texttt{LINGI 1122}: Projet « Machine de Turing » \\ {\large Groupe 13B: Rapport 3}}
+\author{Matthieu \textsc{Baerts} \and Pieter \textsc{Hollevoet} \and Hélène \textsc{Verhaeghe}}
+    \date{\today}
+\begin{document}
+\maketitle
+% \tableofcontents
+% Consignes:
+% À nouveau, cette tâche est semblable à la précédente (3.5). Il s’agit d’analyser le contenu
+% du fichier MTA_B.java fourni par le sous-groupe A et de produire un rapport contenant
+% les éléments suivants.
+% 1. Pour chaque (sous)-machine de Turing donne-t-elle un résultat correct, traite-t-elle
+%  correctement les cas limites éventuels ? Est-elle utilisable comme sous-problème ?
+%  Sinon donnez des contre-exemples sous forme de tests concrets d’exécution.
+% 2. Pour chaque boucle, vérifiez la présence d’un invariant. Est-il précis et complet ?
+%  Est-il respecté par le code ? Sinon, donnez des contre-exemples.
+% 3. Pour chaque boucle, vérifiez la présence d’un variant. Est-il correct ?
+% 4. Une liste des problèmes observés qui ne seraient pas repris dans la liste des points
+%  précédents.
+% Le rapport sera envoyé aux enseignants du cours.
+\section{Analyse du résultat des Machines de Turing}
+
+    \subsection{Addition}
+
+L'addition marche dans tous les cas généraux où on additionne deux nombres non nuls. Il y a néanmoins des problèmes lorsque on additionne un premier nombre (nul ou pas) avec un nombres nul. A ce moment là, le nombre résultant de l'addition est toujours supérieur d'une unité. Cela vient du fait qu'au moment d'effectuer l'addition en unaire, ils ne vérifient pas la présence d'un 1 pour le retirer et en rajouter un entre les deux nombres.
+Une exécution normale (l'addition 3+3) devrait donner la suite de ruban suivants :
+\begin{enumerate}
+\item Ruban initial
+\begin{verbatim}
+--------------------v---------
+ ...B|B|B|1|1|B|1|1|B|B|B|...
+------------------------------
+\end{verbatim}
+\item On place la tête de lecture entre les deux nombres
+\begin{verbatim}
+--------------v---------------
+ ...B|B|B|1|1|B|1|1|B|B|B|...
+------------------------------
+\end{verbatim}
+\item Conversion des deux nombres en unaires
+\begin{verbatim}
+--------------v---------------
+ ...B|B|1|1|1|B|1|1|1|B|B|...
+------------------------------
+\end{verbatim}
+\item On va retirer un 1 au nombre de droite
+\begin{verbatim}
+--------------------v---------
+ ...B|B|1|1|1|B|1|1|B|B|B|...
+------------------------------
+\end{verbatim}
+\item On place un 1 entre les deux nombres
+\begin{verbatim}
+--------------v---------------
+ ...B|B|1|1|1|1|1|1|B|B|B|...
+------------------------------
+\end{verbatim}
+\item On se replace à droite du nombre
+\begin{verbatim}
+--------------------v---------
+ ...B|B|1|1|1|1|1|1|B|B|B|...
+------------------------------
+\end{verbatim}
+\item On le convertit en binaire
+\begin{verbatim}
+--------------------v---------
+ ...B|B|B|B|B|1|1|0|B|B|B|...
+------------------------------
+\end{verbatim}
+\end{enumerate}
+Comme dans leur code, pour retirer le 1 il ne font que se placer à la place théorique du 1 mais ne testent pas si il y en a bien un, on de retrouve avec une exécution comme celle-ci (addition 3+0) :
+\begin{enumerate}
+\item Ruban initial
+\begin{verbatim}
+------------------v-----------
+ ...B|B|B|1|1|B|0|B|B|B|B|...
+------------------------------
+\end{verbatim}
+\item On place la tête de lecture entre les deux nombres
+\begin{verbatim}
+--------------v---------------
+ ...B|B|B|1|1|B|0|B|B|B|B|...
+------------------------------
+\end{verbatim}
+\item Conversion des deux nombres en unaires
+\begin{verbatim}
+--------------v---------------
+ ...B|B|1|1|1|B|B|B|B|B|B|...
+------------------------------
+\end{verbatim}
+\item On va retirer un 1 au nombre de droite : ici, comme ils se déplace au premier blanc à droite puis se déplacent d'une case à gauche, ils reviennent à l'emplacement entre les deux nombres, ne testant pas la présence d'un 1, ils placent un B dans un espace où un B est déjà présent.
+\begin{verbatim}
+--------------v---------------
+ ...B|B|1|1|1|B|B|B|B|B|B|...
+------------------------------
+\end{verbatim}
+\item On place un 1 entre les deux nombres : pour placer le 1, ils un saut vers le premier Blanc à gauche qui en théorie devrait être celui séparent les deux nombres mais en pratique ce n'est pas le même car ils y étaient déjà. Ils placent donc un 1 supplémentaire à gauche du nombre restant.
+\begin{verbatim}
+------v----------------------
+ ...B|1|1|1|1|B|B|B|B|B|B|...
+------------------------------
+\end{verbatim}
+\item On se replace à droite du nombre
+\begin{verbatim}
+--------------v---------------
+ ...B|1|1|1|1|B|B|B|B|B|B|...
+------------------------------
+\end{verbatim}
+\item On le convertit en binaire : ils obtiennent donc un décalage de une unité au nombre final.
+\begin{verbatim}
+--------------v---------------
+ ...B|B|1|0|0|B|B|B|B|B|B|...
+------------------------------
+\end{verbatim}
+\end{enumerate}
+
+    \subsection{Soustraction}
+
+La soustraction marche lorsqu'elle est faite entre deux nombres non égaux, que le premier soit supérieur au deuxième ou le contraire. Le problème arrive lorsque les deux nombres sont les mêmes. Cela est dû à leur implémentation de \texttt{convertToBinaryLeft()}.
+Dans le cas de deux nombres égaux, le résultat de la soustraction est nul, le nombre unaire correspondant est donc représenté par aucun caractères. La conversion d'un nombre composé d'aucune barre en unaire devrait résulter en un O en binaire. Or ici ce n'est pas le cas.
+
+    \subsection{Multiplication}
+
+La multiplication entre deux nombres non nuls marche sans problèmes.
+Lorsqu'un des deux nombres est nul, le nombre unaire résultant est symbolisé par aucun caractère. C'est donc le même problème que pour la soustraction, l'implémentation de la conversion de nombre unaire en binaire dans le cas de nombre nul n'est pas faites comme il faut.
+
+    \subsection{Division}
+
+La division entre un dividende plus grand que le diviseur marche.
+\section{Vérification des invariants}
+\section{Vérification des variants}
+\section{Autre}
+
+    \subsubsection{Non-respect des consignes}
+
+Nous avons remarqué que dans plusieurs de leurs sous-machines, l'autre groupe utilisait des \texttt{long} pour stocker des variables intermédiaires, les incrémenter,...
+Quelques exemples et comment nous aurions fait pour éviter cela :
+\begin{itemize}
+\item Ils utilisent cela pour vérifier si un nombre unaire est plus grand qu'un autre. Pour faire cela, nous aurions remplacé un 1 par un autre symbole sur chacun des nombres et nous aurions vu quel nombre était entièrement remplacé en premier, là nous aurions utilisé un boolean (autorisé) pour garder en mémoire le nombre qui est le plus grand. Pour finir nous aurions replacé des 1 à la place des caractères de remplacement.
+\begin{verbatim}
+--------------v---------------
+ ...B|B|1|1|1|B|1|1|B|B|B|...
+------------------------------
+\end{verbatim}
+\begin{verbatim}
+--------------v---------------
+ ...B|B|1|1|a|B|1|a|B|B|B|...
+------------------------------
+\end{verbatim}
+\begin{verbatim}
+--------------v---------------
+ ...B|B|1|a|a|B|a|a|B|B|B|...
+------------------------------
+\end{verbatim}
+==> plus de caractère à changer à droite -> nbre de droite plus petit que celui de gauche
+\begin{verbatim}
+--------------v---------------
+ ...B|B|1|1|1|B|1|1|B|B|B|...
+------------------------------
+\end{verbatim}
+\item Ils utilisent également un long pour la copie d'un nombre unaire. Pour effectuer cela, de nouveau, ils auraient pus fonctionner avec un remplacement de symbole en allant ajouter un 1 chaque fois qu'il remplace en 1 dans la liste à copier. Puis remettre les caractères remplacé à 1.
+\end{itemize}
+\end{document}
