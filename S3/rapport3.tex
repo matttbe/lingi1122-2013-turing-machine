@@ -35,7 +35,7 @@
       commentstyle=\ttfamily\textcolor{green},
       breaklines=true,
       extendedchars=true,
-      basicstyle=\ttfamily\scriptsize,
+      basicstyle=\ttfamily\tiny,
       showstringspaces=false
     }
 %%%%%%%%%%%%%%%%%%%%
@@ -62,8 +62,8 @@
 
     \subsection{Addition}
 
-L'addition marche dans tous les cas généraux où on additionne deux nombres non nuls. Il y a néanmoins des problèmes lorsque on additionne un premier nombre (nul ou pas) avec un nombres nul. A ce moment là, le nombre résultant de l'addition est toujours supérieur d'une unité. Cela vient du fait qu'au moment d'effectuer l'addition en unaire, ils ne vérifient pas la présence d'un 1 pour le retirer et en rajouter un entre les deux nombres.
-Une exécution normale (l'addition 3+3) devrait donner la suite de ruban suivants :
+L'addition marche dans tous les cas généraux où on additionne deux nombres non nuls. Il y a néanmoins des problèmes lorsque on additionne un premier nombre (nul ou pas) avec un nombre nul. À ce moment là, le nombre résultant de l'addition est toujours supérieur d'une unité. Cela vient du fait qu'au moment d'effectuer l'addition en unaire, ils ne vérifient pas la présence d'un 1 pour le retirer et en rajouter un entre les deux nombres.
+Une exécution normale (l'addition 2+2) devrait donner la suite de ruban suivants :
 \begin{enumerate}
 \item Ruban initial
 \begin{verbatim}
@@ -108,7 +108,7 @@ Une exécution normale (l'addition 3+3) devrait donner la suite de ruban suivant
 ------------------------------
 \end{verbatim}
 \end{enumerate}
-Comme dans leur code, pour retirer le 1 il ne font que se placer à la place théorique du 1 mais ne testent pas si il y en a bien un, on de retrouve avec une exécution comme celle-ci (addition 3+0) :
+Comme dans leur code, pour retirer le 1 ils ne font que se placer à la place théorique du 1 mais ne testent pas si il y en a bien un, on de retrouve avec une exécution comme celle-ci (addition 3+0) :
 \begin{enumerate}
 \item Ruban initial
 \begin{verbatim}
@@ -128,19 +128,19 @@ Comme dans leur code, pour retirer le 1 il ne font que se placer à la place th�
  ...B|B|1|1|1|B|B|B|B|B|B|...
 ------------------------------
 \end{verbatim}
-\item On va retirer un 1 au nombre de droite : ici, comme ils se déplace au premier blanc à droite puis se déplacent d'une case à gauche, ils reviennent à l'emplacement entre les deux nombres, ne testant pas la présence d'un 1, ils placent un B dans un espace où un B est déjà présent.
+\item On va retirer un 1 au nombre de droite : ici, comme il se déplace au premier blanc à droite puis se déplace d'une case à gauche, la tête revient à l'emplacement entre les deux nombres, ne testant pas la présence d'un 1, ils placent un B dans un espace où un B est déjà présent. Or, il fallait déplacer un 1 (donc uniquement s'il en existe un).
 \begin{verbatim}
 --------------v---------------
  ...B|B|1|1|1|B|B|B|B|B|B|...
 ------------------------------
 \end{verbatim}
-\item On place un 1 entre les deux nombres : pour placer le 1, ils un saut vers le premier Blanc à gauche qui en théorie devrait être celui séparent les deux nombres mais en pratique ce n'est pas le même car ils y étaient déjà. Ils placent donc un 1 supplémentaire à gauche du nombre restant.
+\item On place un 1 entre les deux nombres : pour placer le 1, ils font un saut vers le premier blanc à gauche qui en théorie devrait être celui séparent les deux nombres mais en pratique ce n'est pas le même car ils y étaient déjà. Ils placent donc un 1 supplémentaire à gauche du nombre restant.
 \begin{verbatim}
 ------v----------------------
  ...B|1|1|1|1|B|B|B|B|B|B|...
 ------------------------------
 \end{verbatim}
-\item On se replace à droite du nombre
+\item On se replace à droite du nombre.
 \begin{verbatim}
 --------------v---------------
  ...B|1|1|1|1|B|B|B|B|B|B|...
@@ -157,32 +157,45 @@ Comme dans leur code, pour retirer le 1 il ne font que se placer à la place th�
     \subsection{Soustraction}
 
 La soustraction marche lorsqu'elle est faite entre deux nombres non égaux, que le premier soit supérieur au deuxième ou le contraire. Le problème arrive lorsque les deux nombres sont les mêmes. Cela est dû à leur implémentation de \texttt{convertToBinaryLeft()}.
-Dans le cas de deux nombres égaux, le résultat de la soustraction est nul, le nombre unaire correspondant est donc représenté par aucun caractères. La conversion d'un nombre composé d'aucune barre en unaire devrait résulter en un O en binaire. Or ici ce n'est pas le cas. Certes nous n'avions peut-être pas mentionné clairement la représentation du 0 en unaire mais nous supposions que c'était connu.
+
+Dans le cas de deux nombres égaux, le résultat de la soustraction est nul, le nombre unaire correspondant est donc représenté par aucun caractère. La conversion d'un nombre composé d'aucune barre en unaire devrait résulter en un O en binaire. Or ici ce n'est pas le cas. Certes nous n'avions peut-être pas mentionné clairement la représentation du 0 en unaire mais nous supposions que c'était connu.
 
     \subsection{Multiplication}
 
 La multiplication entre deux nombres non nuls marche sans problèmes.
+
 Lorsqu'un des deux nombres est nul, le nombre unaire résultant est symbolisé par aucun caractère. C'est donc le même problème que pour la soustraction, l'implémentation de la conversion de nombre unaire en binaire dans le cas de nombre nul n'est pas faites comme il faut.
 
     \subsection{Division}
 
-La division entre un dividende plus grand que le diviseur marche. La division par 0, la division de 0 par un nombre différent de 0, la division d'un nombre par lui-même et le cas d'un reste nul ne sont pas bien pris en compte. 
-Lorsqu'on divise un nombre non nul par lui-même on obtient une boucle infinie car il ne testent pas si le nombre de droite est différent de 0 et effectue donc des soustractions de 0 du dividende, ce qui ne peut converger puisque le dividende reste constant.
-Pour la division de 0 par un autre nombre, on obtient une exception. Ainsi que pour la division d'un dividende plus petit que le diviseur. Cela est dû au fait qu'il testent si le diviseur est supérieur au dividende au départ, ils lancent une exception alors que ce n'était pas repris comme exception dans les spécification de divide(Tape t).
+La division entre un dividende plus grand que le diviseur marche. La division par 0, la division de 0 par un nombre différent de 0, la division d'un nombre par lui-même et le cas d'un reste nul ne sont pas bien pris en compte. \\
+
+Lorsqu'on divise un nombre non nul par lui-même on obtient une boucle infinie car ils ne testent pas si le nombre de droite est différent de 0 et effectue donc des soustractions de 0 du dividende, ce qui ne peut converger puisque le dividende reste constant.
+
+Pour la division de 0 par un autre nombre, on obtient une exception. Ainsi que pour la division d'un dividende plus petit que le diviseur. Cela est dû au fait qu'ils testent si le diviseur est supérieur au dividende au départ, ils lancent une exception alors que ce n'était pas repris comme exception dans les spécification de \texttt{divide(Tape t)}.
+
 Le fait que la division d'un nombre par lui-même n'est pas possible est également justifié par leur test de grandeur entre le dividende et le diviseur. Leur test demande que le diviseur soit strictement plus grand que le dividende.
+
 Dans le cas d'un reste nul, c'est de nouveau dû au problème de conversion de unaire à binaire dans le cas nul.
+
 \section{Vérification des invariants}
-Pour l'invariant de findFirstBlankOnTheLeft(tape t), le groupe a spécifié qu'il fallait que toute les cases entre la position courante de la tête de lecture et la position de départ étaient des cases blanches. Or il est possible que la case de départ soit blanche et aucun test n'est fait dessus pour le vérifier. 
-La même chose peut être observé pour findFirstBlankOnTheRight(Tape t).
-Les variants pour les méthodes de conversion en unaire ou en binaire sont corrects malgré l'utilisation de variables de type long. Pour l'invariant des méthode qui copient une séquence de caractères leur invariant de boucle est correct.
+Pour l'invariant de \texttt{findFirstBlankOnTheLeft(Tape t)}, le groupe a spécifié qu'il fallait que toute les cases entre la position courante de la tête de lecture et la position de départ étaient des cases blanches. Or il est possible que la case de départ soit blanche et aucun test n'est fait dessus pour le vérifier.
+
+La même chose peut être observé pour \texttt{findFirstBlankOnTheRight(Tape t)}.
+
+Les variants pour les méthodes de conversion en unaire ou en binaire sont corrects malgré l'utilisation de variables de type \texttt{long}. Pour l'invariant des méthodes qui copient une séquence de caractères leur invariant de boucle est correct.
+
 \section{Vérification des variants}
-Pour la plupart des boucles, ils ont comme variant le nombre de caractères non banc restant avant le suivant Blanc. C'est un variant qui peut être correct à condition de se déplacer dans un même sens à chaque itération de la boucle car puisque sur un ruban on sait que le nombre de caractère non blanc est fini et on donc sur que ce nombre décroit dans une direction.
-Pour certain autres invariant, ils s'arrangent pour avoir une variable locale qu'ils décrémentent à chaque itération. Ce qui est également correct.
+Pour la plupart des boucles, ils ont comme variant le nombre de caractères non blanc restant avant le suivant blanc. C'est un variant qui peut être correct à condition de se déplacer dans un même sens à chaque itération de la boucle car puisque sur un ruban on sait que le nombre de caractères non blanc est fini et on est donc sûr que ce nombre décroit dans une direction.
+
+Pour certains autres invariants, ils s'arrangent pour avoir une variable locale qu'ils décrémentent à chaque itération. Ce qui est également correct.
+
 \section{Autre}
 
-    \subsubsection{Non-respect des consignes}
+    \subsection{Non-respect des consignes}
 
 Nous avons remarqué que dans plusieurs de leurs sous-machines, l'autre groupe utilisait des \texttt{long} pour stocker des variables intermédiaires, les incrémenter,...
+
 Quelques exemples et comment nous aurions fait pour éviter cela :
 \begin{itemize}
 \item Ils utilisent cela pour vérifier si un nombre unaire est plus grand qu'un autre. Pour faire cela, nous aurions remplacé un 1 par un autre symbole sur chacun des nombres et nous aurions vu quel nombre était entièrement remplacé en premier, là nous aurions utilisé un boolean (autorisé) pour garder en mémoire le nombre qui est le plus grand. Pour finir nous aurions replacé des 1 à la place des caractères de remplacement.
@@ -202,18 +215,23 @@ Pour marquer qu'on a vu le caractère, on place un 'a' à la place du 1.
  ...B|B|1|a|a|B|a|a|B|B|B|...
 ------------------------------
 \end{verbatim}
-On voit qu'il n'y a plus de caractère à changer à droite. Cela implique que le nombre de droite plus petit que celui de gauche. On stocke ca dans un boolean, puis on remplace les 'a' par des '1' à nouveau.
+On voit qu'il n'y a plus de caractère à changer à droite. Cela implique que le nombre de droite est plus petit que celui de gauche. On stocke ça dans un boolean, puis on remplace les 'a' par des '1' à nouveau.
 \begin{verbatim}
 --------------v---------------
  ...B|B|1|1|1|B|1|1|B|B|B|...
 ------------------------------
 \end{verbatim}
-\item Ils utilisent également un long pour la copie d'un nombre unaire. Pour effectuer cela, de nouveau, ils auraient pus fonctionner avec un remplacement de symbole en allant ajouter un 1 chaque fois qu'il remplace en 1 dans la liste à copier. Puis remettre les caractères remplacé à 1.
+\item Ils utilisent également un long pour la copie d'un nombre unaire. Pour effectuer cela, de nouveau, ils auraient pu fonctionner avec un remplacement de symbole en allant ajouter un 'a' chaque fois qu'il remplace en 1 dans la liste à copier. Puis remettre les caractères remplacé à 1.
 \item Ils ont également rajouté une méthode pour calculer le reste qui renvoie un long, ce qui n'était pas possible de faire.
 \end{itemize}
+
+\newpage
 \appendix
+
 \section{Code de test}
 \lstinputlisting{Test_S3.java}
+\newpage
+
 \section{Résultat de l'exécution}
 \begin{tiny}
 \begin{verbatim}
