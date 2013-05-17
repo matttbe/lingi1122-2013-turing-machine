@@ -1,0 +1,309 @@
+--- S1/rapport1.tex	2013-04-29 16:54:56.446070859 +0200
++++ S1/rapport1bis.tex	2013-05-17 15:35:22.609484506 +0200
+@@ -46,7 +46,9 @@
+ \maketitle
+ % \tableofcontents
+ \section{Sous-Machines}
+-\subsection{\texttt{findFirstBlankOnTheLeft()} (\texttt{F1BL})}
++\subsection{\texttt{findFirstBlankOnTheLeft(Tape t)} (\texttt{F1BL})}
++\paragraph{But:} Cette méthode permet de déplacer la t\^ete de lecture jusqu'à la prochaine case contenant un Blanc à gauche de la case où se trouvait la tête de lecture au départ.
++\paragraph{Signature:} \texttt{public void findFirstBlankOnTheLeft()}
+ \paragraph{Pré:} La tête de lecture se trouve sur un caractère quelconque du ruban.
+ \begin{verbatim}
+ -------------------------------------------------v---------------------
+@@ -61,7 +63,9 @@
+ -----------------------------------------------------------------------
+ \end{verbatim}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+-\subsection{\texttt{findFirstBlankOnTheRight()} (\texttt{F1BR})}
++\subsection{\texttt{findFirstBlankOnTheRight(Tape t)} (\texttt{F1BR})}
++\paragraph{But:} Cette méthode permet de déplacer la t\^ete de lecture jusqu'à la prochaine case contenant un Blanc à droite de la case où se trouvait la tête de lecture au départ.
++\paragraph{Signature:} \texttt{public void findFirstBlankOnTheRight()}
+ \paragraph{Pré:} La tête de lecture se trouve sur un caractère quelconque du ruban.
+ \begin{verbatim}
+ ---------------------v-------------------------------------------------
+@@ -78,6 +82,8 @@
+ où C est un caractère quelconque
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \subsection{\texttt{convertToUnaryLeft()}}
++\paragraph{But:} Cette méthode permet de convertir un nombre binaire se trouvant à gauche de la tête de lecture (la dernière case occupée par le nombre binaire étant la case juste à gauche de celle où se trouve la tête) en un nombre unaire (placé à gauche de la tête de lecture, le dernier caractère du nombre se trouvant sur la case juste à gauche de celle de la tête de lecture) tout en ne touchant pas à la partie du ruban à droite de la tête de lecture.
++\paragraph{Signature:} \texttt{public void convertToUnaryLeft(Tape t)}
+ \paragraph{Pré:} La tête de lecture se trouve sur un blanc et, à sa gauche, se trouve une suite valide en binaire délimitée par un blanc.
+ \begin{verbatim}
+ ---------------------------------------v---------------------
+@@ -93,6 +99,8 @@
+ \end{verbatim}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \subsection{\texttt{convertToUnaryRight()}}
++\paragraph{But:} Cette méthode permet de convertir un nombre binaire se trouvant à droite de la tête de lecture (la première case occupée par le nombre binaire étant la case juste à droite de celle où se trouve la tête) en un nombre unaire (placé à droite de la tête de lecture, le premier caractère du nombre se trouvant sur la case juste à droite de celle de la tête de lecture) tout en ne touchant pas à la partie du ruban à gauche de la tête de lecture.
++\paragraph{Signature:} \texttt{public void convertToUnaryRight(Tape t)}
+ \paragraph{Pré:}
+ La tête de lecture se trouve sur un blanc et, à sa droite, se trouve une suite valide en binaire délimitée par un blanc.
+ \begin{verbatim}
+@@ -110,6 +118,8 @@
+ \end{verbatim}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \subsection{\texttt{convertToBinaryLeft()}}
++\paragraph{But:} Cette méthode permet de convertir un nombre unaire se trouvant à gauche de la tête de lecture (la dernière case occupée par le nombre unaire étant la case juste à gauche de celle où se trouve la tête) en un nombre binaire (placé à gauche de la tête de lecture, le dernier caractère du nombre se trouvant sur la case juste à gauche de celle de la tête de lecture) tout en ne touchant pas à la partie du ruban à droite de la tête de lecture.
++\paragraph{Signature:} \texttt{public void convertToBinaryLeft(Tape t)}
+ \paragraph{Pré:}
+ La tête de lecture se trouve sur un blanc et, à sa gauche, se trouve une suite valide en unaire délimitée par un blanc.
+ \begin{verbatim}
+@@ -127,6 +137,8 @@
+ \end{verbatim}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \subsection{\texttt{convertToBinaryRight()}}
++\paragraph{But:} Cette méthode permet de convertir un nombre unaire se trouvant à droite de la tête de lecture (la première case occupée par le nombre unaire étant la case juste à droite de celle où se trouve la tête) en un nombre binaire (placé à droite de la tête de lecture, le premier caractère du nombre se trouvant sur la case juste à droite de celle de la tête de lecture) tout en ne touchant pas à la partie du ruban à gauche de la tête de lecture.
++\paragraph{Signature:} \texttt{public void convertToBinaryRight(Tape t)}
+ \paragraph{Pré:}
+ La tête de lecture se trouve sur un blanc et, à sa droite, se trouve une suite valide en unaire délimitée par un blanc.
+ \begin{verbatim}
+@@ -144,6 +156,8 @@
+ \end{verbatim}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  ^^^^ Addition and substraction ^^^^
+ \subsection{\texttt{addOneBlankAfterTheFirstBlankOnTheLeft()}}
++\paragraph{But:} Cette méthode permet de placer un caractère Blanc dans la première case à gauche de la première case contenant déjà un caractère Blanc à gauche de la tête de lecture.
++\paragraph{Signature:} \texttt{public void addOneBlankAfterTheFirstBlankOnTheLeft(Tape t)}
+ \paragraph{Pré:} La tête de lecture est placée sur un blanc. À gauche se situe une suite de caractères délimitée par un blanc.
+ \begin{verbatim}
+ -------------------------------------------v---------------------
+@@ -160,13 +174,15 @@
+ \end{small}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \subsection{\texttt{copyLeftOfLeftSequence()}}
++\paragraph{But:} Cette méthode à pour but de recopier la suite de 1, se trouvant entre le premier blanc à gauche de la tête de lecture et celle-ci, à gauche de la tête de lecture, de telle sorte que le dernier caractère de la suite recopiée soit à l'emplacement du deuxième blanc à gauche de la tête de lecture.
++\paragraph{Signature:} \texttt{public void copyLeftOfLeftSequence(Tape t)}
+ \paragraph{Pré:} La tête de lecture est placée sur un blanc. À gauche se situe une suite de 1 délimitée par un blanc.
+ \begin{verbatim}
+ --------------------------------------------------------v---------------------
+  suite de caractères|B|suite de caractères|B|suite de 1|B|suite de caractères
+ ------------------------------------------------------------------------------
+ \end{verbatim}
+-\paragraph{Post:} La tête de lecture est de retour au même endroit. La suite de 1 à sa gauche est quant à elle inchangée (elle a pu être modifiée entre temps mais on y retrouve toujours le même nombre de 1 l'un à la suite délimité par un blanc). Cette même suite de 1 à été recopiée du 2ème blanc à gauche vers la gauche (en décallant ce deuxième blanc vers la gauche et en le remplaçant par un caractère 1). 
++\paragraph{Post:} La tête de lecture est de retour au même endroit. La suite de 1 à sa gauche est quant à elle inchangée (elle a pu être modifiée entre temps mais on y retrouve toujours le même nombre de 1 l'un à la suite délimité par un blanc). Cette même suite de 1 à été recopiée du 2ème blanc à gauche vers la gauche (en décalant ce deuxième blanc vers la gauche et en le remplaçant par un caractère 1). 
+ \begin{footnotesize}
+ \begin{verbatim}
+ -----------------------------------------------------------------------------v---------------------
+@@ -176,6 +192,8 @@
+ \end{footnotesize}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \subsection{\texttt{eraseRight()}}
++\paragraph{But:} Cette méthode à pour but de remplacer la suite de caractère non blanc se trouvant à droite de la tête de lecture et délimitée par celle-ci et le premier Blanc à droite de celle-ci par une suite de charactère Blanc.
++\paragraph{Signature:} \texttt{public void eraseRight(Tape t)}
+ \paragraph{Pré:}
+ La tête de lecture se trouve sur un blanc, à sa droite se trouve une représentation d'un nombre délimitée par une blanc.
+ \begin{verbatim}
+@@ -183,15 +201,19 @@
+  suite de caractères|B|suite de caractères non blancs|B|suite de caractères
+ ----------------------------------------------------------------------------
+ \end{verbatim}
+-\paragraph{Post:}
++\paragraph{Post:} 
+ La tête de lecture se trouve au même endroit que précédemment. La partie gauche du ruban n'a pas été modifiée. La représentation du nombre à sa droite délimité par un blanc a été effacée (remplacée par des blancs).
++\begin{small}
+ \begin{verbatim}
+ ----------------------------------v-----------------------------------------------
+  suite de caractères non modifiés|B|suite de B|B|suite de caractères non modifiés
+ ----------------------------------------------------------------------------------
+ \end{verbatim}
++\end{small}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \subsection{\texttt{copyRightOfLeftSequence()}}
++\paragraph{But:} Cette méthode à pour but de recopier la suite de 1, se trouvant entre le premier blanc à gauche de la tête de lecture et celle-ci, à droite de la tête de lecture, de telle sorte que le premier caractère de la suite recopiée soit à l'emplacement du premier blanc à droite de la tête de lecture.
++\paragraph{Signature:} \texttt{public void copyRightOfLeftSequence(Tape t)}
+ \paragraph{Pré:} La tête de lecture est placée sur un blanc, à gauche duquel se situe une suite de 1.
+ \begin{verbatim}
+ --------------------------------v---------------------
+@@ -208,6 +230,8 @@
+ \end{small}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \subsection{\texttt{incrementLeft()}}
++\paragraph{But:} Cette méthode permet l'incrémentation du nombre unaire placé juste à gauche de la tête de lecture. L'incrémentation se fait en rajoutant un charactère 1 dans la case contenant un Blanc dilimitant le nombre à gauche. On place également un Blanc à gauche de ce caractère d'incrémentation pour s'assurer que le nombre est tjs bien délimité par un Blanc de chaque coté.
++\paragraph{Signature:} \texttt{public void incrementLeft(Tape t)}
+ \paragraph{Pré:} 
+ La tête de lecture se trouve sur un blanc du ruban. A sa droite se trouve une représentation unaire d'un nombre délimité par un blanc (si il n'y a que des blancs le nombre est 0).
+ \begin{verbatim}
+@@ -216,7 +240,7 @@
+ -------------------------------------------------------------------
+ \end{verbatim}
+ \paragraph{Post:}
+-La tête de lecture se trouve à la même position. Le nombre unaire a droite a été incrémenté de 1. Dans le cas ou il était nul (blanc), il est mis a 1.
++La tête de lecture se trouve à la même position. Le nombre unaire a droite a été incrémenté de 1. Dans le cas où il était nul (blanc), il est mis a 1.
+ \begin{verbatim}
+ -----------------------------------------------v----------------------
+  suite de caractères|B|1|réprésentation unaire|B|suite de caractères
+@@ -224,6 +248,8 @@
+ \end{verbatim}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \subsection{\texttt{shiftSubstract()}}
++\paragraph{But:} Cette méthode soustrait le nombre unaire juste à droite de la tête de lecture du nombre unaire juste à gauche. La soustraction de fait de telle sorte que les 1 retirés le sont par la droite du nombre et au final on ramène le nombre de droite (inchangé) de telle sorte qu'il n'y aie qu'une case Blanche entre les deux nombres (case sur laquelle se trouve la tête de lecture).
++\paragraph{Signature:} \texttt{public void shiftSubstract(Tape t)}
+ \paragraph{Pré:}
+ La tête de lecture se trouve sur un blanc séparant deux nombres en représentation unaire. Ces deux nombres sont délimités par un blanc.
+ \begin{small}
+@@ -244,6 +270,8 @@
+ \end{footnotesize}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \section{Addition}\label{add}
++Les spécifications de cette méthode ainsi que sa signature sont disponibles dans l'énoncé donné.\\
++
+ \begin{verbatim}
+ ---------------------------------------------------------v---------------------
+  suite de caractères|B|suite de 0 et 1|B|suite de 0 et 1|B|suite de caractères
+@@ -275,7 +303,9 @@
+ \end{verbatim}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \section{Soustraction}
+-Premièrement, on place la tête de lecture entre les deux nombres grâce à \texttt{findFirstBlankOnTheLeft()}.
++Les spécifications de cette méthode ainsi que sa signature sont disponibles dans l'énoncé donné.\\
++
++Premièrement, on place la tête de lecture entre les deux nombres grâce à \texttt{findFirstBlankOn\-The\-Left()}.
+ Ensuite, on utilise \texttt{convertToUnaryRight()} et \texttt{convertToUnaryLeft()} pour transformer les deux nombres en unaire. Le blanc entre les deux nombres est conservé tout comme les deux premières étapes de la section \ref{add}. Un exemple ici la soustraction de 5 par 3.
+ \begin{verbatim}
+ -----------------------------v---------------------------
+@@ -308,9 +338,11 @@
+ \end{verbatim}
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \section{Multiplication}
+-Premièrement, on place la tête de lecture entre les deux nombres grâce à \texttt{findFirstBlankOnTheLeft()}.
++Les spécifications de cette méthode ainsi que sa signature sont disponibles dans l'énoncé donné.\\
++
++Premièrement, on place la tête de lecture entre les deux nombres grâce à \texttt{findFirstBlankOn\-The\-Left()}.
+ Ensuite, on utilise \texttt{convertToUnaryRight()} et \texttt{convertToUnaryLeft()} pour transformer les deux nombres en unaire. Le blanc entre les deux nombres est conservé tout comme les deux premières étapes de la section \ref{add}.\\
+-Il faut ensuite placer un blanc à gauche du premier blanc de gauche grâce à \texttt{addOneBlankAfterTheFirst\-BlankOnTheLeft()}.
++Il faut ensuite placer un blanc à gauche du premier blanc de gauche grâce à \texttt{addOneBlankAfter\-The\-First\-BlankOnTheLeft()}.
+ \begin{verbatim}
+ --------------------------------------v------------------------------------
+  suite de caractères|B|B|suite de m 1|B|suite de n 1|B|suite de caractères
+@@ -323,30 +355,30 @@
+ ----------------------------------------------------------------------------
+ \end{verbatim}
+ À chaque décrémentation, on appelle \texttt{copyLeftOfLeftSequence()} pour recopier la suite de $m$ 1 à droite du deuxième blanc en décalant ce blanc vers la gauche et en le remplaçant par un blanc.
+-\begin{small}
++\begin{footnotesize}
+ \begin{verbatim}
+ ---------------------------------------------------v---------------------------------------
+  suite de caractères|B|suite de m 1|B|suite de m 1|B|suite de n-1 1|BB|suite de caractères
+ -------------------------------------------------------------------------------------------
+ \end{verbatim}
+-\end{small}
++\end{footnotesize}
+ Ces opérations sont donc à réaliser tant que la suite de droite n'est pas vide (2 blancs).
+-\begin{footnotesize}
++\begin{scriptsize}
+ \begin{verbatim}
+ --------------------------------------------------------------------v------------------------------------
+  suite de caractères|B|suite de m 1|...|suite de m 1|B|suite de m 1|B|suite de n B|B|suite de caractères
+ ---------------------------------------------------------------------------------------------------------
+ \end{verbatim}
+-\end{footnotesize}
++\end{scriptsize}
+ Il faut maintenant placer la tête de lecture sur le blanc de gauche (avec \texttt{findFirstBlankOnTheLeft()}). Le résultat de la multiplication se trouve à gauche de ce blanc, on peut donc supprimer tout ce qu'il y a à droite en utilisant \texttt{eraseRight()}.
+-\begin{footnotesize}
++\begin{scriptsize}
+ \begin{verbatim}
+ -----------------------------------------------------v---------------------------------------------------
+  suite de caractères|B|suite de m 1|...|suite de m 1|B|suite de m B|B|suite de n B|B|suite de caractères
+ ---------------------------------------------------------------------------------------------------------
+ \end{verbatim}
+-\end{footnotesize}
+-On retransforme ensuite le nombre unaire représentant le résultat en binaire avec \texttt{convertToBinaryLeft()}.
++\end{scriptsize}
++On retransforme ensuite le nombre unaire représentant le résultat en binaire avec \texttt{convertTo\-Binary\-Left()}.
+ \begin{verbatim}
+ ---------------------------------------v----------------------------------------
+  suite de caractères|B|suite de 0 et 1|B|suite de m+n+1 B|B|suite de caractères
+@@ -362,62 +394,64 @@
+ %% Ou: on inverse les deux: BB111B11111B ; on calcule => B1B111B11BBBB => il faut à nouveau déplacer... donc autant prend
+ %% On n'a donc pas besoin de marqueurs (enfin, ils devront en utiliser dans la sous-machine qui remplace les caractères à gauches par le nombre de blancs correspondant au diviseur)
+ %% PS: attention qu'il faut vérifier quand s'arrêter... => on arrive à 2/3, il ne faut pas commencer à remplacer des blancs... et on ne peut pas compter avant => on peut utiliser une exception où, si on veut diviser et qu'il n'y a pas assez à diviser, on annule les changements: càd, on ne remplace pas les 1 par des blancs mais par des marqueurs, si tout va bien (pas d'exception, on remplace les marqueurs par des B et si non, par des 1. S'il n'y a pas d'exception, on ajoute 1 au quotient (donc après).
+-On transforme les deux nombres à multiplier en unaire comme expliqué dans la section \ref{add}. Notre ruban est alors de la forme:
+-\begin{small}
+-\begin{verbatim}
+--------------------------------v-------------------------------
+- suite de caractères|Dividende|B|Diviseur|suite de caractères
+----------------------------------------------------------------
++
++Les spécifications de cette méthode ainsi que sa signature sont disponibles dans l'énoncé donné.\\
++
++Ensuite, on transforme les deux nombres à multiplier en unaire comme expliqué dans la section \ref{add}.\\Il faut également ajouter un blanc à gauche grâce à \texttt{addOneBlankAfterTheFirstBlank\-On\-The\-Left()}.
++Notre ruban est alors de la forme:
++\begin{verbatim}
++-----------------------------------v--------------------------------
++ suite de caractères|B|B|Dividende|B|Diviseur|B|suite de caractères
++--------------------------------------------------------------------
+ \end{verbatim}
+-\end{small}
+ Ensuite on doit tester si le dividende est plus grand que le diviseur ou non. 
+-Dans le cas ou il est plus grand on effectue une boucle, on utilise la méthode \texttt{shiftSubstract()} pour soustraire le diviseur du dividente (qui sera notre reste).
++Dans le cas où il est plus grand on effectue une boucle, on utilise la méthode \texttt{shiftSubstract()} pour soustraire le diviseur du dividende (qui sera notre reste).
+ \begin{small}
+ \begin{verbatim}
+-------------------------------------------v-------------------------------
+- suite de caractères|B|Dividende-Diviseur|B|Diviseur|suite de caractères
+---------------------------------------------------------------------------
++-------------------------------------------v--------------------------------
++ suite de caractères|BB|Dividende-Diviseur|B|Diviseur|B|suite de caractères
++----------------------------------------------------------------------------
+ \end{verbatim}
+ \end{small}
+ Ensuite on doit augmenter notre quotient de 1. On utilise \texttt{findFirstBlankOnTheLeft()} suivi de \texttt{incrementLeft()}.
+ \begin{small}
+ \begin{verbatim}
+------------------------v--------------------------------------------------
+- suite de caractères|1|B|Dividende-Diviseur|B|Diviseur|suite de caractères
+---------------------------------------------------------------------------
++-------------------------v-----------------------------------------------------
++ suite de caractères|B|1|B|Dividende-Diviseur|B|Diviseur|B|suite de caractères
++-------------------------------------------------------------------------------
+ \end{verbatim}
+ \end{small}
+-Un appel a \texttt{findFirstBlankOnTheRight()} replace notre curseur a la position entre les 2 unaires et la forme générale du ruban sera: 
++Un appel a \texttt{findFirstBlankOnTheRight()} replace notre curseur à la position entre les 2 unaires et la forme générale du ruban sera: 
+ \begin{small}
+ \begin{verbatim}
+---------------------------------------v------------------------------
+- suite de caractères|Quotient|B|Reste|B|Diviseur|suite de caractères
+----------------------------------------------------------------------
++----------------------------------------v--------------------------------
++ suite de caractères|B|Quotient|B|Reste|B|Diviseur|B|suite de caractères
++-------------------------------------------------------------------------
+ \end{verbatim}
+ \end{small}
+-On peut recommencer cette boucle jusqu'a ce que notre reste soit inférieur au diviseur. A la terminaison de la boucle, \texttt{eraseRight()} permet d'effacer notre diviseur
++On peut recommencer cette boucle jusqu'à ce que notre reste soit inférieur au diviseur. A la terminaison de la boucle, \texttt{eraseRight()} permet d'effacer notre diviseur
+ et d'obtenir :
+ \begin{small}
+ \begin{verbatim}
+---------------------------------------v--------------------------------
+- suite de caractères|Quotient|B|Reste|B|suite de B|suite de caractères
+------------------------------------------------------------------------
++----------------------------------------v--------------------------------
++ suite de caractères|B|Quotient|B|Reste|B|suite de B|suite de caractères
++-------------------------------------------------------------------------
+ \end{verbatim}
+ \end{small}
+ \texttt{findFirstBlankOnTheLeft()} pour positionner la tête sure le blanc entre le quotient et le reste en unaire.
+ \begin{small}
+ \begin{verbatim}
+--------------------------------------v----------------------------------
+- suite de caractères|Quotient unaire|B|Reste unaire|suite de caractères
+-------------------------------------------------------------------------
++---------------------------------------v------------------------------------
++ suite de caractères|B|Quotient unaire|B|Reste unaire|B|suite de caractères
++----------------------------------------------------------------------------
+ \end{verbatim}
+ \end{small}
+-On retransforme ensuite les nombre unaire en binaire avec \texttt{convertToBinaryLeft()} et \texttt{convertToBinaryRight()}.
++On retransforme ensuite les nombre unaire en binaire avec \texttt{convertToBinaryLeft()} et \texttt{convert\-To\-Binary\-Right()}.
+ \begin{small}
+ \begin{verbatim}
+---------------------------------------v-----------------------------------
+- suite de caractères|Quotient binaire|B|Reste binaire|suite de caractères
+---------------------------------------------------------------------------
++----------------------------------------v-------------------------------------
++ suite de caractères|B|Quotient binaire|B|Reste binaire|B|suite de caractères
++------------------------------------------------------------------------------
+ \end{verbatim}
+ \end{small}
+ Et finalement \texttt{findFirstBlankOnTheright()} pour positionner la tête de lecture à l'endroit souhaité.
