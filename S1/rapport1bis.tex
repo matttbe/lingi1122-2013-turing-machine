@@ -138,8 +138,8 @@ La taille de cette suite peut être différente de la précédente, les changeme
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{\texttt{convertToBinaryRight()}}
 \paragraph{But:} Cette méthode permet de convertir un nombre unaire se trouvant à droite de la tête de lecture (la première case occupée par le nombre unaire étant la case juste à droite de celle où se trouve la tête) en un nombre binaire (placé à droite de la tête de lecture, le premier caractère du nombre se trouvant sur la case juste à droite de celle de la tête de lecture) tout en ne touchant pas à la partie du ruban à gauche de la tête de lecture.
-\paragraph{Signature:}
-\paragraph{Pré:} \texttt{public void convertToBinaryRight(Tape t)}
+\paragraph{Signature:} \texttt{public void convertToBinaryRight(Tape t)}
+\paragraph{Pré:}
 La tête de lecture se trouve sur un blanc et, à sa droite, se trouve une suite valide en unaire délimitée par un blanc.
 \begin{verbatim}
 ---------------------v----------------------------------
@@ -270,6 +270,8 @@ La tête se trouve sur le blanc entre les 2 représentations unaire. Le premier 
 \end{footnotesize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Addition}\label{add}
+Les spécifications de cette méthode ainsi que sa signature sont disponibles dans l'énoncé donné.\\
+
 \begin{verbatim}
 ---------------------------------------------------------v---------------------
  suite de caractères|B|suite de 0 et 1|B|suite de 0 et 1|B|suite de caractères
@@ -301,6 +303,8 @@ Pour finir, se replacer à l'extrême droite du nombre final et appliquer \textt
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Soustraction}
+Les spécifications de cette méthode ainsi que sa signature sont disponibles dans l'énoncé donné.\\
+
 Premièrement, on place la tête de lecture entre les deux nombres grâce à \texttt{findFirstBlankOn\-The\-Left()}.
 Ensuite, on utilise \texttt{convertToUnaryRight()} et \texttt{convertToUnaryLeft()} pour transformer les deux nombres en unaire. Le blanc entre les deux nombres est conservé tout comme les deux premières étapes de la section \ref{add}. Un exemple ici la soustraction de 5 par 3.
 \begin{verbatim}
@@ -334,6 +338,8 @@ Pour finir, il ne reste plus qu'à appliquer \texttt{convertToBinaryLeft()}. La 
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Multiplication}
+Les spécifications de cette méthode ainsi que sa signature sont disponibles dans l'énoncé donné.\\
+
 Premièrement, on place la tête de lecture entre les deux nombres grâce à \texttt{findFirstBlankOn\-The\-Left()}.
 Ensuite, on utilise \texttt{convertToUnaryRight()} et \texttt{convertToUnaryLeft()} pour transformer les deux nombres en unaire. Le blanc entre les deux nombres est conservé tout comme les deux premières étapes de la section \ref{add}.\\
 Il faut ensuite placer un blanc à gauche du premier blanc de gauche grâce à \texttt{addOneBlankAfter\-The\-First\-BlankOnTheLeft()}.
@@ -388,6 +394,9 @@ On retransforme ensuite le nombre unaire représentant le résultat en binaire a
 %% Ou: on inverse les deux: BB111B11111B ; on calcule => B1B111B11BBBB => il faut à nouveau déplacer... donc autant prend
 %% On n'a donc pas besoin de marqueurs (enfin, ils devront en utiliser dans la sous-machine qui remplace les caractères à gauches par le nombre de blancs correspondant au diviseur)
 %% PS: attention qu'il faut vérifier quand s'arrêter... => on arrive à 2/3, il ne faut pas commencer à remplacer des blancs... et on ne peut pas compter avant => on peut utiliser une exception où, si on veut diviser et qu'il n'y a pas assez à diviser, on annule les changements: càd, on ne remplace pas les 1 par des blancs mais par des marqueurs, si tout va bien (pas d'exception, on remplace les marqueurs par des B et si non, par des 1. S'il n'y a pas d'exception, on ajoute 1 au quotient (donc après).
+
+Les spécifications de cette méthode ainsi que sa signature sont disponibles dans l'énoncé donné.\\
+
 Ensuite, on transforme les deux nombres à multiplier en unaire comme expliqué dans la section \ref{add}.\\Il faut également ajouter un blanc à gauche grâce à \texttt{addOneBlankAfterTheFirstBlank\-On\-The\-Left()}.
 Notre ruban est alors de la forme:
 \begin{verbatim}
