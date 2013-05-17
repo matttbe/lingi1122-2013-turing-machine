@@ -20,8 +20,9 @@ public class TapeA_B implements Tape {
 		
 		// to ensure the position of the read head is after the last block of init
 		String initB = init + " "; 
-		
-		// initialisation
+
+
+		// INIT
 		readhead = null;
 		Cell tempNew = null;
 		int maxLength = initB.length ();
@@ -30,10 +31,13 @@ public class TapeA_B implements Tape {
 		
 		/**
 		 * building of the tape:
-		 * 	Inv: readhead contains the last cell of a double linked list
-		 * 		 representative of the sub-chartable up to the index i 
-		 * 		 not counted. The linked list is not finished (the next 
-		 * 		 variable of readhead is not assigned).
+		 * 	Inv: we have a tabular with id between 0 and 'maxLength'.
+		 * 	     we have to read all cells.
+		 * 	     at one moment, i is between 0 and 'maxLength',
+		 * 	      all id's before i have already been read.
+		 * 	         |0    |i    |maxLength
+		 * 	         |01010101010|
+		 * 	H: i == maxLength
 		 * 	Var: i contains the index of the last char added to the
 		 * 		 structure + 1
 		 */
@@ -48,13 +52,13 @@ public class TapeA_B implements Tape {
 			i++;
 		}
 		
-		// finish the tape
+		// CLOT: finish the tape
 		readhead.next = null;
 	}
 	
 	/**
 	 * Test if the structure agreed the invariant of representation :
-	 * - characters are in the Gamma alphabet (from char n°32 to 126)
+	 * - characters are in the Gamma alphabet (from char n 32 to 126)
 	 * - no loop, linear course long the double linked list
 	 * - only one cell with a null previous and only one with a null next
 	 * - the readhead must be on the tape (not null)
@@ -62,66 +66,82 @@ public class TapeA_B implements Tape {
 	 * - B' (extended zone B with blanc at ends) zone as little as possible
 	 * @return :	true, if the object agreed the invariant of representation
 	 * 				false, if not
-	 * TODO : invariant et variant de boucle
 	 */
 	public boolean repOk() {
-		int test = 0;
-		
-		// ensure at least one block
+		// SUB-PROB1: ensure at least one block
 		if (readhead == null)
-			test++;
-			
-		// first search, to the left
-		Cell tempNow = readhead.next;
-		Cell tempPast = readhead;
+			return false;
+
+
+		/* SUB-PROB2: read all cell ; direction: to the left.
+		 * 	Aim: check if all chars are correct and if there is no double linkage
+		 */
+		// INIT
+		Cell tempNow = readhead.next;	// the current cell
+		Cell tempPast = readhead;	// the previous one
 		/**
 		 * var: at each step tempPast is the previous cell and tempNow 
 		 *      is the cell on the right
 		 * inv: readHead is not modified
+		 * H: tempNow == null
 		 */
-		while (tempNow != null && test == 0) {
+		while (tempNow != null) {
 			// ensure an available char
 			try {
 				testChar(tempNow.content);
 			} catch (Exception e){
-				test++;
+				return false;
 			}
 			// ensure double linkage 
 			if ((tempNow.previous != tempPast) || (tempNow == readhead))
-				test++;
+				return false;
 			tempPast = tempNow;
 			tempNow = tempPast.next;
 		}
-		// test if there is not too much blanc at the end (B' as little as possible)
-		if (test == 0 && tempPast != readhead && tempPast.content == B)
-			test++;
-			
-		// second search, to the right
+
+
+		/* SUB-PROB3: if the tape contains more than one element:
+		 * 	Aim: test if there is no blank at the end
+		 */
+		if (tempPast != readhead && tempPast.content == B)
+			return false;
+
+
+		/* SUB-PROB4: read all cell ; direction: to the right.
+		 * 	Aim: check if all chars are correct and if there is no double linkage
+		 */
+		// INIT
 		tempNow = readhead.previous;
 		tempPast = readhead;
 		/**
 		 * var: at each step tempPast is the next cell and tempNow 
 		 *      is the cell on the left
 		 * inv: readHead is not modified
+		 * H: tempNow == null
 		 */
-		while (tempNow != null && test == 0) {
+		while (tempNow != null) {
 			// ensure an available char
 			try {
 				testChar(tempNow.content);
 			} catch (Exception e) {
-				test++;
+				return false;
 			}
 			// ensure double linkage 
 			if ((tempNow.next != tempPast) || (tempNow == readhead))
-				test++;
+				return false;
 			tempPast = tempNow;
 			tempNow = tempPast.previous;
 		}
-		// test if there is not too much blanc at the end (B' as little as possible)
-		if (test == 0 && tempPast != readhead && tempPast.content == B)
-			test++;
-		
-		return (test == 0);
+
+
+		/* SUB-PROB5: if the tape contains more than one element:
+		 * 	Aim: test if there is no blank at the end
+		 */
+		if (tempPast != readhead && tempPast.content == B)
+			return false;
+
+		// No sub-problem has failed:
+		return true;
 	}
 
 	/**
