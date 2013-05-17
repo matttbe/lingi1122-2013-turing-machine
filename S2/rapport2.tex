@@ -25,7 +25,7 @@
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage{listings}        % Pour l'insersion de fichiers de codes sources.
 \lstset{
-      language=bash,
+      language=Java,
       flexiblecolumns=true,
       numbers=left,
       stepnumber=1,
@@ -35,7 +35,7 @@
       commentstyle=\ttfamily\textcolor{green},
       breaklines=true,
       extendedchars=true,
-      basicstyle=\ttfamily\scriptsize,
+      basicstyle=\ttfamily\tiny,
       showstringspaces=false
     }
 %%%%%%%%%%%%%%%%%%%%
@@ -47,13 +47,24 @@
 % \tableofcontents
 
 
-Nous n'avons pas rencontrés énormément de problèmes pour implémenter le squelette qui nous était donné. Seul ont été des variables d'état nous étant inutile ou non spécifiées :
-\begin{itemize}
-\item repOkNb et checkedFor : Ces deux variables d'instance respectivement des classes TapeA\_B et Cell ne nous étaient pas spécifiées clairement. Apparament, elles devaient servir à la méthode repOk mais nous ne leur avont trouvé aucune utilité. Comme nous vérifions au fur et à mesure de bien être linké dans les deux sens au maillon précédent, nous ne devons pas les marquer mais simplement vérifier que nous ne retombont pas sur le premier maillon. Ainsi dans le cas d'une boucle qui arriverais sur un des maillons déjà testé, en testant le maillon précédent, nous savons voir qu'on ne revient pas sur nos pas et donc qu'il y a une boucle quelque part.
-\item NullPreviousEncountered et NullNextEncountered : Pour ces deux variables, nous savions à quoi elles étaient utile, c'est pourquoi nous les avons utilisées. Maintenant, il nous semblait que leur existance n'était pas obligatoire car elles indiquaient si il existe un maillon à droite ou gauche. C'est donc une redondance par rapport au simple fait de tester si la référence vers la Cell previous ou la Cell next de readhead est null. C'est donc une source d'erreur qui nous semble inutile.
-\end{itemize}
+\section*{Introduction}
+Nous n'avons pas rencontré énormément de problèmes pour implémenter le squelette qui nous était donné. Les seuls points que nous jugeons utiles de mentionner sont en rapport avec des variables d'état que nous n'avons pas utilisées car en implémentant les différentes méthodes, elles se sont jugées inutiles ou redondantes :
 
+\section{Analyse}
+\subsection{\texttt{repOkNb} et \texttt{checkedFor}}
+Ces deux variables d'instance respectivement des classes \texttt{TapeA\_B} et \texttt{Cell} ne nous étaient pas spécifiées clairement.\\
+Apparemment, elles devaient servir à la méthode \texttt{repOk}\footnote{Après la remise de la première version du rapport, il s'est avéré que, même si cette méthode se trouvait dans le squelette du programme donné, cette méthode ne devait pas être implémentée.} mais nous ne leur avons trouvé aucune utilité. Comme nous vérifions au fur et à mesure de bien lier chaque cellule dans les deux sens, nous ne devons pas les marquer mais simplement vérifier que nous ne retombons pas sur le premier maillon.\\
+Ainsi dans le cas d'une boucle qui arriverait sur un des maillons déjà testé, en testant le maillon précédent, nous savons voir que l'on ne revient pas sur nos pas et donc qu'il y a une boucle quelque part.
 
+\subsection{\texttt{NullPreviousEncountered} et \texttt{NullNextEncountered}}
+Pour ces deux variables, nous savions à quoi elles étaient utiles : savoir si la cellule précédente (resp. suivante) existait ou non. Maintenant, nous ne voyons pas de justification à leur existence vu qu'il était facilement possible de les vérifier grâce à la structure de la cellule: \texttt{cell.previous == null}.\\
+Vu que ces variables n'apportaient que de la redondance et donc un risque d'erreur supplémentaire, nous ne les avons pas utilisées.
 
+\section*{Conclusion}
+Nous avons complété le squelette comme demandé mais nous avons préféré corrigé deux-trois petites choses comme cité dans l'analyse.
+
+\appendix
+\section{Implémentation}
+\lstinputlisting{TapeA_B.java}
 
 \end{document}
